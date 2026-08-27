@@ -89,7 +89,7 @@
             100% { transform: scale(0) rotate(60deg) translateX(120px) translateY(60px); opacity: 0; border-radius: 100%; }
         }
 
-        /* 主内容区域 — 使用flex列撑开 */
+        /* 主内容区域 */
         .main-content {
             position: relative;
             z-index: 10;
@@ -114,7 +114,7 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 30px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
@@ -170,13 +170,14 @@
             line-height: 1.6;
         }
 
-        /* 右侧小方块区域 */
+        /* 右侧区域 */
         .right-side {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 12px;
+            gap: 10px;
             flex: 1;
+            min-width: 0;
         }
 
         /* 实时时间 */
@@ -184,46 +185,45 @@
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
             border-radius: 16px;
-            padding: 10px 24px;
+            padding: 8px 20px;
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 4px 16px rgba(120, 140, 200, 0.1);
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
             color: #1e2b4a;
             text-align: center;
-            min-width: 140px;
+            min-width: 120px;
         }
 
         .time-box .date-text {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 300;
             opacity: 0.6;
             margin-top: 2px;
         }
 
-        /* 小方块容器 - 横向排列 */
+        /* 小方块容器 */
         .mini-blocks {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: flex-end;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        /* 小方块通用样式 */
         .mini-block {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
-            border-radius: 16px;
-            padding: 12px 22px;
+            border-radius: 14px;
+            padding: 10px 18px;
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 4px 16px rgba(120, 140, 200, 0.1);
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             color: #1e2b4a;
-            min-width: 80px;
+            min-width: 70px;
             text-align: center;
             position: relative;
         }
@@ -234,13 +234,358 @@
             background: rgba(255, 255, 255, 0.8);
         }
 
-        /* 中间空白区域 — 用flex撑起 */
-        .middle-spacer {
-            flex: 1 0 auto;
-            min-height: 120px;
+        /* ===== Memes 相册模块 - 竖长方形 ===== */
+        .memes-section {
+            width: 100%;
+            max-width: 200px;
+            align-self: flex-end;
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 12px 14px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(120, 140, 200, 0.08);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            cursor: pointer;
+            position: relative;
+            transform-origin: top right;
         }
 
-        /* ===== 底部区域 — 固定在底部 ===== */
+        /* 悬停时整体放大 */
+        .memes-section:hover {
+            transform: scale(1.3);
+            box-shadow: 0 20px 60px rgba(70, 100, 200, 0.25);
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 50;
+            border-color: rgba(123, 149, 208, 0.3);
+        }
+
+        /* 点击提示 */
+        .memes-section .click-hint {
+            position: absolute;
+            bottom: 6px;
+            right: 10px;
+            font-size: 0.45rem;
+            color: #8a9bb8;
+            opacity: 0.3;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .memes-section:hover .click-hint {
+            opacity: 0.7;
+        }
+
+        .memes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .memes-header h3 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e2b4a;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .memes-header h3 i {
+            color: #7b95d0;
+            font-size: 0.7rem;
+        }
+
+        .memes-header .hint-text {
+            font-size: 0.5rem;
+            color: #8a9bb8;
+            opacity: 0.4;
+        }
+
+        .memes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .meme-item {
+            position: relative;
+            aspect-ratio: 9 / 16;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            background: rgba(200, 215, 240, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .meme-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .memes-section:hover .meme-item {
+            border-color: rgba(123, 149, 208, 0.2);
+        }
+
+        .memes-section:hover .meme-item:hover {
+            transform: scale(1.12);
+            z-index: 10;
+            box-shadow: 0 8px 30px rgba(70, 100, 200, 0.3);
+            border-color: #7b95d0;
+        }
+
+        .meme-item.upload-btn {
+            background: rgba(200, 215, 240, 0.15);
+            border: 2px dashed rgba(123, 149, 208, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #7b95d0;
+            transition: all 0.3s;
+            cursor: pointer;
+            aspect-ratio: 9 / 16;
+        }
+
+        .meme-item.upload-btn:hover {
+            background: rgba(200, 215, 240, 0.3);
+            border-color: #7b95d0;
+        }
+
+        .meme-item.upload-btn i {
+            transition: transform 0.3s;
+        }
+
+        .meme-item.upload-btn:hover i {
+            transform: rotate(90deg);
+        }
+
+        .memes-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 16px 8px;
+            color: #8a9bb8;
+            font-size: 0.7rem;
+        }
+
+        .memes-empty i {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 4px;
+            opacity: 0.4;
+        }
+
+        /* ===== 相册全屏页面 ===== */
+        .album-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(240, 244, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+            padding: 30px 40px 40px;
+            overflow-y: auto;
+        }
+
+        .album-page.open {
+            display: flex;
+        }
+
+        .album-page .album-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(150, 180, 255, 0.2);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .album-page .album-header h2 {
+            font-size: 1.6rem;
+            color: #1e2b4a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .album-page .album-header h2 i {
+            color: #7b95d0;
+        }
+
+        .album-page .album-header .album-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .album-page .album-header .album-actions button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+
+        .album-page .album-header .btn-close-album {
+            background: rgba(200, 215, 240, 0.3);
+            color: #1e2b4a;
+        }
+
+        .album-page .album-header .btn-close-album:hover {
+            background: rgba(200, 215, 240, 0.5);
+        }
+
+        .album-page .album-header .btn-upload-album {
+            background: #6f8ed6;
+            color: white;
+        }
+
+        .album-page .album-header .btn-upload-album:hover {
+            background: #5a77b8;
+            transform: scale(1.02);
+        }
+
+        .album-page .album-header .btn-clear-album {
+            background: #e74c6f;
+            color: white;
+        }
+
+        .album-page .album-header .btn-clear-album:hover {
+            background: #c0392b;
+        }
+
+        /* 全屏相册网格 - 一行6列 */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            flex: 1;
+        }
+
+        .album-grid .album-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            background: rgba(200, 215, 240, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .album-grid .album-item:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 32px rgba(70, 100, 200, 0.2);
+            border-color: #7b95d0;
+            z-index: 5;
+        }
+
+        .album-grid .album-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .album-grid .album-item .delete-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(231, 76, 79, 0.85);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: 0.2s;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .album-grid .album-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .album-grid .album-item .delete-btn:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .album-grid .album-item.upload-album-btn {
+            background: rgba(200, 215, 240, 0.15);
+            border: 2px dashed rgba(123, 149, 208, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #7b95d0;
+            cursor: pointer;
+            transition: 0.3s;
+            aspect-ratio: 1 / 1;
+        }
+
+        .album-grid .album-item.upload-album-btn:hover {
+            background: rgba(200, 215, 240, 0.3);
+            border-color: #7b95d0;
+            transform: scale(1.04);
+        }
+
+        .album-grid .album-item.upload-album-btn i {
+            transition: transform 0.3s;
+        }
+
+        .album-grid .album-item.upload-album-btn:hover i {
+            transform: rotate(90deg);
+        }
+
+        .album-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #8a9bb8;
+            font-size: 1rem;
+        }
+
+        .album-empty i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* 中间弹性空白区域 */
+        .middle-spacer {
+            flex: 1 0 auto;
+            min-height: 40px;
+        }
+
+        /* ===== 底部区域 ===== */
         .footer-section {
             margin-top: 40px;
             padding: 30px 30px 28px;
@@ -262,24 +607,6 @@
             margin-bottom: 6px;
         }
 
-        .footer-section .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: 0.2s;
-            padding: 6px 12px;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .footer-section .footer-links a:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* 每个链接组（图标+文字+小字） */
         .footer-link-group {
             display: flex;
             flex-direction: column;
@@ -397,7 +724,6 @@
             color: #6a7fc0;
         }
 
-        /* 遮罩 */
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -417,6 +743,12 @@
         }
 
         /* ===== 响应式 ===== */
+        @media (max-width: 1100px) {
+            .album-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
         @media (max-width: 900px) {
             .top-section {
                 flex-direction: column;
@@ -435,6 +767,15 @@
                 justify-content: flex-start;
             }
 
+            .memes-section {
+                max-width: 160px;
+                align-self: flex-start;
+            }
+
+            .memes-section:hover {
+                transform: scale(1.2);
+            }
+
             .popup-panel {
                 width: 100%;
                 right: -100%;
@@ -442,6 +783,14 @@
 
             .footer-section .footer-links {
                 gap: 24px;
+            }
+
+            .album-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .album-page {
+                padding: 20px;
             }
         }
 
@@ -455,23 +804,57 @@
             }
 
             .mini-block {
-                padding: 10px 16px;
-                min-width: 60px;
-                font-size: 0.8rem;
+                padding: 8px 14px;
+                min-width: 50px;
+                font-size: 0.75rem;
             }
 
             .time-box {
-                font-size: 0.95rem;
-                padding: 8px 16px;
-                min-width: 100px;
+                font-size: 0.85rem;
+                padding: 6px 14px;
+                min-width: 80px;
             }
 
             .footer-section .footer-links {
                 gap: 16px;
             }
 
-            .footer-section .footer-links a {
-                font-size: 0.85rem;
+            .memes-section {
+                max-width: 140px;
+            }
+
+            .memes-section:hover {
+                transform: scale(1.15);
+            }
+
+            .memes-grid {
+                gap: 4px;
+            }
+
+            .meme-item {
+                border-radius: 8px;
+            }
+
+            .memes-section {
+                padding: 8px 10px 10px;
+            }
+
+            .album-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .album-page {
+                padding: 14px;
+            }
+
+            .album-page .album-header h2 {
+                font-size: 1.2rem;
+            }
+
+            .album-page .album-header .album-actions button {
+                padding: 6px 14px;
+                font-size: 0.75rem;
             }
         }
 
@@ -493,6 +876,14 @@
         }
         ::-webkit-scrollbar-track {
             background: transparent;
+        }
+
+        .album-page::-webkit-scrollbar {
+            width: 6px;
+        }
+        .album-page::-webkit-scrollbar-thumb {
+            background: #b0c4e0;
+            border-radius: 20px;
         }
     </style>
 </head>
@@ -522,6 +913,21 @@
                 <li>✨ 感谢你的访问</li>
             </ul>
             <p style="margin-top: 16px; font-size: 0.85rem; opacity: 0.6; text-align: center;">滚动可查看更多内容</p>
+        </div>
+    </div>
+
+    <!-- ===== 相册全屏页面 ===== -->
+    <div id="albumPage" class="album-page">
+        <div class="album-header">
+            <h2><i class="fas fa-image"></i> Memes 相册</h2>
+            <div class="album-actions">
+                <button class="btn-upload-album" id="albumUploadBtn"><i class="fas fa-plus"></i> 上传</button>
+                <button class="btn-clear-album" id="albumClearBtn"><i class="fas fa-trash"></i> 清空</button>
+                <button class="btn-close-album" id="albumCloseBtn"><i class="fas fa-times"></i> 关闭</button>
+            </div>
+        </div>
+        <div class="album-grid" id="albumGrid">
+            <!-- 由 JavaScript 动态生成 -->
         </div>
     </div>
 
@@ -564,16 +970,30 @@
                         <i class="fas fa-ellipsis-h"></i> 空白
                     </div>
                 </div>
+
+                <!-- ===== Memes 相册模块（竖长方形，点击进入全屏） ===== -->
+                <div class="memes-section" id="memesSection">
+                    <div class="memes-header">
+                        <h3><i class="fas fa-image"></i> Memes</h3>
+                        <span class="hint-text">点击可以进入哟</span>
+                    </div>
+                    <div class="memes-grid" id="memesGrid">
+                        <!-- 由 JavaScript 动态生成 -->
+                    </div>
+                    <span class="click-hint">点击查看全部 →</span>
+                </div>
             </div>
         </div>
 
-        <!-- 中间弹性空白区域，把底部推到底部 -->
+        <!-- 隐藏的文件输入 -->
+        <input type="file" id="fileInput" accept="image/*" multiple>
+
+        <!-- 中间弹性空白区域 -->
         <div class="middle-spacer"></div>
 
         <!-- 底部区域 -->
         <div class="footer-section">
             <div class="footer-links">
-                <!-- GitHub 链接（占位） -->
                 <div class="footer-link-group">
                     <a href="#" class="link-main">
                         <i class="fab fa-github"></i> GitHub
@@ -581,7 +1001,6 @@
                     <span class="link-hint">——</span>
                 </div>
 
-                <!-- Bilibili 链接：跳转到指定空间，带小字 -->
                 <div class="footer-link-group">
                     <a href="https://space.bilibili.com/518073863?spm_id_from=333.1007.0.0" 
                        target="_blank" 
@@ -701,12 +1120,247 @@
             alert('📦 这个板块还在建设中，敬请期待！');
         });
 
-        // ---------- 5. 头像点击更换提示 ----------
+        // ---------- 5. 头像点击提示 ----------
         document.getElementById('avatarImg').addEventListener('click', function() {
             alert('🖼️ 点击上传头像功能\n(您可以直接替换 img 的 src 属性)');
         });
 
+        // ============================================================
+        // ========== 6. Memes 相册功能 ==========
+        // ============================================================
+        const STORAGE_KEY = 'memes_images';
+        const ADMIN_PASSWORD = '840526';
+        const MAX_IMAGES = 200;
+
+        const memesGrid = document.getElementById('memesGrid');
+        const albumGrid = document.getElementById('albumGrid');
+        const fileInput = document.getElementById('fileInput');
+        const memesSection = document.getElementById('memesSection');
+        const albumPage = document.getElementById('albumPage');
+
+        // 相册页按钮
+        const albumUploadBtn = document.getElementById('albumUploadBtn');
+        const albumClearBtn = document.getElementById('albumClearBtn');
+        const albumCloseBtn = document.getElementById('albumCloseBtn');
+
+        // ---------- 数据存储 ----------
+        function getStoredImages() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveStoredImages(images) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
+            } catch (e) {}
+        }
+
+        function getDefaultImages() {
+            return [
+                'https://via.placeholder.com/300/7b95d0/ffffff?text=Meme+1',
+                'https://via.placeholder.com/300/6a7fc0/ffffff?text=Meme+2',
+                'https://via.placeholder.com/300/8aa8e0/ffffff?text=Meme+3',
+                'https://via.placeholder.com/300/5a77b8/ffffff?text=Meme+4',
+                'https://via.placeholder.com/300/9ab8f0/ffffff?text=Meme+5',
+                'https://via.placeholder.com/300/4a67a8/ffffff?text=Meme+6',
+            ];
+        }
+
+        // ---------- 渲染主页小相册（2x2，显示前4张） ----------
+        function renderMiniMemes() {
+            let images = getStoredImages();
+            if (!images || images.length === 0) {
+                images = getDefaultImages();
+                saveStoredImages(images);
+            }
+
+            memesGrid.innerHTML = '';
+            const displayImages = images.slice(0, 4);
+
+            if (displayImages.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'memes-empty';
+                emptyDiv.innerHTML = '<i class="fas fa-image"></i> 暂无';
+                memesGrid.appendChild(emptyDiv);
+                return;
+            }
+
+            displayImages.forEach((url) => {
+                const item = document.createElement('div');
+                item.className = 'meme-item';
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Meme';
+                img.loading = 'lazy';
+                item.appendChild(img);
+                memesGrid.appendChild(item);
+            });
+
+            // 如果超过4张，显示"+"提示
+            if (images.length > 4) {
+                const moreBtn = document.createElement('div');
+                moreBtn.className = 'meme-item';
+                moreBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;background:rgba(200,215,240,0.15);font-size:1.2rem;color:#7b95d0;aspect-ratio:9/16;border:2px dashed rgba(123,149,208,0.3);';
+                moreBtn.innerHTML = '+' + (images.length - 4);
+                memesGrid.appendChild(moreBtn);
+            }
+        }
+
+        // ---------- 渲染全屏相册（6列） ----------
+        function renderAlbum() {
+            const images = getStoredImages();
+            albumGrid.innerHTML = '';
+
+            if (images.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'album-empty';
+                emptyDiv.innerHTML = '<i class="fas fa-image"></i> 还没有图片<br>点击右上角"上传"添加';
+                albumGrid.appendChild(emptyDiv);
+                return;
+            }
+
+            images.forEach((url, index) => {
+                const item = document.createElement('div');
+                item.className = 'album-item';
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Meme ' + (index + 1);
+                img.loading = 'lazy';
+                item.appendChild(img);
+
+                // 删除按钮（需要密码）
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.innerHTML = '<i class="fas fa-times"></i>';
+                delBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const pwd = prompt('请输入管理员密码删除此图片：');
+                    if (pwd === ADMIN_PASSWORD) {
+                        const newImages = getStoredImages();
+                        newImages.splice(index, 1);
+                        saveStoredImages(newImages);
+                        renderAlbum();
+                        renderMiniMemes();
+                        alert('✅ 已删除');
+                    } else if (pwd !== null) {
+                        alert('❌ 密码错误');
+                    }
+                });
+                item.appendChild(delBtn);
+
+                // 点击图片查看大图
+                item.addEventListener('click', function() {
+                    window.open(url, '_blank');
+                });
+
+                albumGrid.appendChild(item);
+            });
+        }
+
+        // ---------- 打开/关闭相册 ----------
+        function openAlbum() {
+            renderAlbum();
+            albumPage.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAlbum() {
+            albumPage.classList.remove('open');
+            document.body.style.overflow = '';
+            renderMiniMemes();
+        }
+
+        memesSection.addEventListener('click', openAlbum);
+        albumCloseBtn.addEventListener('click', closeAlbum);
+
+        // ---------- 上传图片（相册页） ----------
+        albumUploadBtn.addEventListener('click', function() {
+            const pwd = prompt('请输入管理员密码以上传图片：');
+            if (pwd === ADMIN_PASSWORD) {
+                fileInput.click();
+            } else if (pwd !== null) {
+                alert('❌ 密码错误');
+            }
+        });
+
+        // ---------- 清空所有图片（相册页） ----------
+        albumClearBtn.addEventListener('click', function() {
+            const pwd = prompt('请输入管理员密码以清空所有图片：');
+            if (pwd === ADMIN_PASSWORD) {
+                if (confirm('确定要清空所有 Memes 图片吗？')) {
+                    saveStoredImages([]);
+                    renderAlbum();
+                    renderMiniMemes();
+                    alert('✅ 已清空所有图片');
+                }
+            } else if (pwd !== null) {
+                alert('❌ 密码错误');
+            }
+        });
+
+        // ---------- 文件上传处理 ----------
+        fileInput.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            const images = getStoredImages();
+            let loadedCount = 0;
+
+            files.forEach(function(file) {
+                if (images.length >= MAX_IMAGES) {
+                    alert('已达到最大图片数量 (' + MAX_IMAGES + ' 张)');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    images.push(ev.target.result);
+                    loadedCount++;
+                    if (loadedCount === files.length) {
+                        saveStoredImages(images);
+                        renderAlbum();
+                        renderMiniMemes();
+                        alert('✅ 成功上传 ' + loadedCount + ' 张图片！');
+                    }
+                };
+                reader.onerror = function() {
+                    loadedCount++;
+                    if (loadedCount === files.length) {
+                        saveStoredImages(images);
+                        renderAlbum();
+                        renderMiniMemes();
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+
+            fileInput.value = '';
+        });
+
+        // ---------- ESC 关闭相册 ----------
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && albumPage.classList.contains('open')) {
+                closeAlbum();
+            }
+        });
+
+        // ---------- 点击遮罩关闭相册 ----------
+        // 相册页面本身点击空白区域关闭（点击内容区域不关闭）
+        albumPage.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAlbum();
+            }
+        });
+
+        // ---------- 初始化 ----------
+        renderMiniMemes();
+
         console.log('✨ 捷捷捷捷的个人网站已启动');
+        console.log('📸 Memes相册已加载，管理员密码: 840526');
+        console.log('💡 点击相册区域进入全屏查看');
     })();
 </script>
 </body>
