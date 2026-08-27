@@ -1,0 +1,407 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>构式</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0b0d1a;
+      padding: 1.5rem;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gradient-block {
+      width: 480px;
+      height: 480px;
+      max-width: 90vw;
+      max-height: 90vh;
+      background: linear-gradient(145deg, #4a90e2, #b27cf5, #f7a1c4);
+      background-size: 300% 300%;
+      border-radius: 36px;
+      box-shadow: 0 30px 60px -10px rgba(74, 144, 226, 0.4),
+                  0 15px 30px -8px rgba(178, 124, 245, 0.3),
+                  inset 0 2px 4px rgba(255, 255, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      padding: 2rem;
+      text-align: center;
+      animation: gradientFlow 8s ease-in-out infinite alternate;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+      transition: transform 0.2s ease;
+      user-select: none;
+    }
+
+    .gradient-block:hover {
+      transform: scale(1.02);
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .gradient-block h2 {
+      font-size: 2.4rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(to right, #ffffff, #f0eaff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+    }
+
+    .gradient-block p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 300;
+      letter-spacing: 1px;
+      backdrop-filter: blur(2px);
+      padding: 0.2rem 1.2rem;
+      border-radius: 60px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+
+    .gradient-block .hint {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.5;
+      letter-spacing: 2px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 0.6rem;
+      width: 60%;
+      pointer-events: none;
+    }
+
+    .fragments-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .fragment {
+      position: absolute;
+      border-radius: 12px;
+      background: inherit;
+      background-size: cover;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      animation: fragmentFly 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      pointer-events: none;
+    }
+
+    @keyframes fragmentFly {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
+      }
+    }
+
+    .reveal-text {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      color: #fff;
+      font-size: 3.5rem;
+      font-weight: 700;
+      text-align: center;
+      z-index: 30;
+      pointer-events: none;
+      opacity: 0;
+      text-shadow: 0 0 40px rgba(178, 124, 245, 0.6), 0 0 80px rgba(74, 144, 226, 0.4);
+      line-height: 1.4;
+      max-width: 80vw;
+      transition: none;
+    }
+
+    .reveal-text.show {
+      animation: textPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes textPop {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      60% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .reveal-text small {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 300;
+      margin-top: 0.8rem;
+      opacity: 0.7;
+      letter-spacing: 4px;
+    }
+
+    .reset-btn {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 40;
+      padding: 14px 40px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 60px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      letter-spacing: 1px;
+      font-weight: 300;
+    }
+
+    .reset-btn.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .reset-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateX(-50%) scale(1.05);
+      box-shadow: 0 8px 30px rgba(74, 144, 226, 0.3);
+    }
+
+    @media (max-width: 540px) {
+      .gradient-block {
+        width: 320px;
+        height: 320px;
+        border-radius: 28px;
+      }
+      .gradient-block h2 { font-size: 1.8rem; }
+      .gradient-block p { font-size: 0.95rem; }
+      .reveal-text { font-size: 2.2rem; }
+      .reveal-text small { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gradient-block" id="mainBlock">
+    <h2><img src="https://i.imgs.ovh/2026/08/26/6ccd2fb19ad0120f277cbf495c7b40b4.jpg" alt:"疑惑猫猫"width="150" height="150" /></h2>
+    <p> 👉点击我 </p>
+  </div>
+
+  <div class="fragments-container" id="fragmentsContainer"></div>
+
+  <div class="reveal-text" id="revealText">
+    玛德要开学了😡
+  </div>
+
+  <button class="reset-btn" id="resetBtn">⟳ 恢复</button>
+
+  <script>
+    (function() {
+      const block = document.getElementById('mainBlock');
+      const container = document.getElementById('fragmentsContainer');
+      const revealText = document.getElementById('revealText');
+      const resetBtn = document.getElementById('resetBtn');
+
+      let isShattered = false;
+
+  
+      function playGlassBreakSound() {
+        try {
+       
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          const ctx = new AudioCtx();
+
+       
+          for (let i = 0; i < 25; i++) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+         
+            osc.frequency.setValueAtTime(800 + Math.random() * 3200, ctx.currentTime);
+       
+            const types = ['sawtooth', 'square', 'triangle'];
+            osc.type = types[Math.floor(Math.random() * types.length)];
+
+            const startTime = ctx.currentTime + Math.random() * 0.1;
+            const duration = 0.03 + Math.random() * 0.07;
+
+           
+            gain.gain.setValueAtTime(0.001, startTime);
+            gain.gain.linearRampToValueAtTime(0.15 + Math.random() * 0.35, startTime + 0.005);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+          }
+
+          
+          for (let i = 0; i < 6; i++) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.frequency.setValueAtTime(1000 + Math.random() * 2000, ctx.currentTime);
+            osc.type = 'sine';
+
+            const startTime = ctx.currentTime + 0.05 + Math.random() * 0.12;
+            const duration = 0.06 + Math.random() * 0.14;
+
+            gain.gain.setValueAtTime(0.001, startTime);
+            gain.gain.linearRampToValueAtTime(0.1 + Math.random() * 0.2, startTime + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+          }
+
+          
+          const oscLow = ctx.createOscillator();
+          const gainLow = ctx.createGain();
+          oscLow.connect(gainLow);
+          gainLow.connect(ctx.destination);
+
+          oscLow.frequency.setValueAtTime(120 + Math.random() * 80, ctx.currentTime);
+          oscLow.type = 'sawtooth';
+
+          const lowStart = ctx.currentTime + 0.02;
+          gainLow.gain.setValueAtTime(0.001, lowStart);
+          gainLow.gain.linearRampToValueAtTime(0.15, lowStart + 0.02);
+          gainLow.gain.exponentialRampToValueAtTime(0.001, lowStart + 0.2);
+
+          oscLow.start(lowStart);
+          oscLow.stop(lowStart + 0.2);
+        } catch (e) { }}
+
+        function shatterBlock() {
+        if (isShattered) return;
+        isShattered = true;
+
+        playGlassBreakSound();
+
+        const rect = block.getBoundingClientRect();
+        const blockWidth = rect.width;
+        const blockHeight = rect.height;
+        const blockLeft = rect.left;
+        const blockTop = rect.top;
+
+        const computedStyle = window.getComputedStyle(block);
+        const bgImage = computedStyle.backgroundImage;
+
+        block.style.opacity = '0';
+        block.style.transition = 'opacity 0.2s ease';
+        block.style.pointerEvents = 'none';
+
+        const cols = 4;
+        const rows = 4;
+        const fragWidth = blockWidth / cols;
+        const fragHeight = blockHeight / rows;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const fragment = document.createElement('div');
+            fragment.className = 'fragment';
+
+            const left = blockLeft + c * fragWidth;
+            const top = blockTop + r * fragHeight;
+
+            fragment.style.left = left + 'px';
+            fragment.style.top = top + 'px';
+            fragment.style.width = fragWidth + 'px';
+            fragment.style.height = fragHeight + 'px';
+
+            fragment.style.backgroundImage = bgImage;
+            fragment.style.backgroundSize = blockWidth + 'px ' + blockHeight + 'px';
+            fragment.style.backgroundPosition = `-${c * fragWidth}px -${r * fragHeight}px`;
+
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 150 + Math.random() * 200;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance - 80;
+            const rot = (Math.random() - 0.5) * 720;
+
+            fragment.style.setProperty('--tx', tx + 'px');
+            fragment.style.setProperty('--ty', ty + 'px');
+            fragment.style.setProperty('--rot', rot + 'deg');
+
+            const delay = Math.random() * 0.15;
+            fragment.style.animationDelay = delay + 's';
+
+            container.appendChild(fragment);
+          }
+        }
+
+        setTimeout(() => {
+          revealText.classList.add('show');
+          resetBtn.classList.add('show');
+        }, 400);
+      }
+
+      function resetBlock() {
+        if (!isShattered) return;
+        isShattered = false;
+
+        container.innerHTML = '';
+        revealText.classList.remove('show');
+        resetBtn.classList.remove('show');
+
+        block.style.opacity = '1';
+        block.style.pointerEvents = 'auto';
+        block.style.transform = 'scale(1)';
+      }
+
+      block.addEventListener('click', shatterBlock);
+      resetBtn.addEventListener('click', resetBlock);
+      document.addEventListener('click', function activateAudio() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          if (ctx.state === 'suspended') {
+            ctx.resume();
+          }
+        } catch(e) {}
+        document.removeEventListener('click', activateAudio);
+      }, { once: true });
+      console.log('✨ 点击蓝粉方块，它会裂开并播放合成音效！');
+    })();
+  </script>
+</body>
+</html>
