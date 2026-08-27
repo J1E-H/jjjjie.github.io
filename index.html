@@ -14,25 +14,30 @@
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
             min-height: 100vh;
             background: #f0f4ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .site-wrapper {
             position: relative;
             width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
             background: linear-gradient(145deg, #e0f0ff 0%, #fce4ec 100%);
             background-blend-mode: overlay;
         }
 
+        /* 开幕动画 */
         .intro-overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -84,431 +89,520 @@
             100% { transform: scale(0) rotate(60deg) translateX(120px) translateY(60px); opacity: 0; border-radius: 100%; }
         }
 
-        .grid-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* 主内容区域 — 使用flex列撑开 */
+        .main-content {
+            position: relative;
             z-index: 10;
-            display: grid;
-            grid-template-columns: 1fr 320px 280px;
-            grid-template-rows: 1fr 1fr 1fr;
-            gap: 16px;
-            padding: 25px 35px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 40px 40px;
             opacity: 0;
-            transition: opacity 1.2s ease, backdrop-filter 0.6s;
-            backdrop-filter: blur(0px);
-            background: rgba(255, 250, 250, 0.25);
-            pointer-events: none;
-        }
-
-        .grid-background.active {
-            opacity: 1;
-            backdrop-filter: blur(12px) brightness(1.04);
-            pointer-events: auto;
-            background: rgba(255, 248, 248, 0.3);
-            box-shadow: inset 0 0 40px rgba(255, 240, 240, 0.3);
-        }
-
-        .grid-item {
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(4px);
-            border-radius: 32px 12px 32px 12px;
-            box-shadow: 0 8px 24px rgba(120, 140, 200, 0.15), 0 2px 6px rgba(0,0,0,0.02);
-            padding: 20px 18px;
+            transition: opacity 1.2s ease;
+            width: 100%;
+            flex: 1 0 auto;
             display: flex;
             flex-direction: column;
-            transition: all 0.2s;
+        }
+
+        .main-content.active {
+            opacity: 1;
+        }
+
+        /* ===== 顶部区域 ===== */
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* 左侧个人简介卡片 */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 24px 28px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #1e2b4a;
-            font-weight: 400;
-            overflow-y: auto;
-            word-break: break-word;
+            box-shadow: 0 8px 32px rgba(120, 140, 200, 0.12);
+            width: 280px;
+            flex-shrink: 0;
+            transition: all 0.3s;
         }
 
-        .grid-item:hover {
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 16px 32px rgba(70, 100, 200, 0.2);
-            backdrop-filter: blur(8px);
+        .profile-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(120, 140, 200, 0.2);
         }
 
-        .grid-item h3 {
-            font-size: 1.2rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-            border-bottom: 2px solid rgba(150, 180, 255, 0.3);
-            padding-bottom: 6px;
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #b8d0ff, #8aa8e0);
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 16px rgba(100, 140, 220, 0.3);
+            overflow: hidden;
         }
 
-        .grid-item p, .grid-item li {
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e2b4a;
+            margin-bottom: 4px;
+        }
+
+        .profile-card .subtitle {
+            font-size: 0.85rem;
+            color: #5a6f96;
+            line-height: 1.6;
+        }
+
+        /* 右侧小方块区域 */
+        .right-side {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            flex: 1;
+        }
+
+        /* 实时时间 */
+        .time-box {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 10px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(120, 140, 200, 0.1);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1e2b4a;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .time-box .date-text {
+            font-size: 0.7rem;
+            font-weight: 300;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        /* 小方块容器 - 横向排列 */
+        .mini-blocks {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        /* 小方块通用样式 */
+        .mini-block {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 12px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(120, 140, 200, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1e2b4a;
+            min-width: 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .mini-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(120, 140, 200, 0.2);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 中间空白区域 — 用flex撑起 */
+        .middle-spacer {
+            flex: 1 0 auto;
+            min-height: 120px;
+        }
+
+        /* ===== 底部区域 — 固定在底部 ===== */
+        .footer-section {
+            margin-top: 40px;
+            padding: 30px 30px 28px;
+            background: rgba(30, 40, 60, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .footer-section .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .footer-section .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
             font-size: 0.95rem;
-            line-height: 1.5;
-            color: #1f2a44;
+            transition: 0.2s;
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .grid-item ul {
+        .footer-section .footer-links a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 每个链接组（图标+文字+小字） */
+        .footer-link-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .footer-link-group .link-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        .footer-link-group .link-main:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-link-group .link-hint {
+            font-size: 0.65rem;
+            opacity: 0.5;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.3px;
+            margin-top: -2px;
+            transition: opacity 0.2s;
+        }
+
+        .footer-link-group:hover .link-hint {
+            opacity: 0.85;
+        }
+
+        .footer-section .footer-copy {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            margin-top: 10px;
+        }
+
+        /* ===== 弹出面板 (公告板) ===== */
+        .popup-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            box-shadow: -10px 0 60px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            padding: 30px 28px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .popup-panel.open {
+            right: 0;
+        }
+
+        .popup-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(150, 180, 255, 0.2);
+        }
+
+        .popup-panel .panel-header h3 {
+            font-size: 1.3rem;
+            color: #1e2b4a;
+        }
+
+        .popup-panel .panel-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #888;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .popup-panel .panel-close:hover {
+            background: rgba(0,0,0,0.05);
+            color: #333;
+        }
+
+        .popup-panel .panel-content {
+            color: #2a3a5a;
+            line-height: 1.8;
+        }
+
+        .popup-panel .panel-content ul {
             list-style: none;
-            padding-left: 4px;
+            padding-left: 0;
         }
 
-        .grid-item ul li::before {
+        .popup-panel .panel-content ul li {
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            background: rgba(200, 220, 255, 0.15);
+            border-radius: 12px;
+            border-left: 3px solid #7b95d0;
+        }
+
+        .popup-panel .panel-content ul li::before {
             content: "✦ ";
             color: #6a7fc0;
         }
 
-        /* ===== 新布局 ===== */
-        .profile-grid {
-            grid-column: 1;
-            grid-row: 1 / 4;
-        }
-
-        .chat-grid {
-            grid-column: 2;
-            grid-row: 1 / 4;
-            min-height: 0;
-        }
-
-        .announcement-grid {
-            grid-column: 3;
-            grid-row: 1;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .announcement-grid.expanded {
-            grid-row: 1 / 3;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 20px 60px rgba(70, 100, 200, 0.3);
-        }
-
-        .announcement-grid .expand-hint {
-            font-size: 0.7rem;
-            color: #888;
-            margin-top: 4px;
-            opacity: 0.6;
-        }
-
-        .announcement-grid.expanded .expand-hint {
-            display: none;
-        }
-
-        .announcement-grid .extra-content {
-            display: none;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px dashed rgba(150,180,255,0.3);
-        }
-
-        .announcement-grid.expanded .extra-content {
-            display: block;
-        }
-
-        .contact-grid {
-            grid-column: 3;
-            grid-row: 2;
-        }
-
-        .placeholder-grid {
-            grid-column: 3;
-            grid-row: 3;
-        }
-
-        .chat-box {
-            display: flex;
-            flex-direction: column;
+        /* 遮罩 */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            gap: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 99;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
 
-        .chat-messages {
-            flex: 1;
-            min-height: 0;
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            padding: 14px 16px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            scrollbar-width: thin;
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
         }
 
-        .chat-messages::-webkit-scrollbar {
+        /* ===== 响应式 ===== */
+        @media (max-width: 900px) {
+            .top-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .profile-card {
+                width: 100%;
+            }
+
+            .right-side {
+                align-items: stretch;
+            }
+
+            .mini-blocks {
+                justify-content: flex-start;
+            }
+
+            .popup-panel {
+                width: 100%;
+                right: -100%;
+            }
+
+            .footer-section .footer-links {
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 16px;
+            }
+
+            .profile-card {
+                padding: 18px 16px;
+            }
+
+            .mini-block {
+                padding: 10px 16px;
+                min-width: 60px;
+                font-size: 0.8rem;
+            }
+
+            .time-box {
+                font-size: 0.95rem;
+                padding: 8px 16px;
+                min-width: 100px;
+            }
+
+            .footer-section .footer-links {
+                gap: 16px;
+            }
+
+            .footer-section .footer-links a {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* 滚动条美化 */
+        .popup-panel::-webkit-scrollbar {
             width: 4px;
         }
-        .chat-messages::-webkit-scrollbar-thumb {
+        .popup-panel::-webkit-scrollbar-thumb {
             background: #b0c4e0;
             border-radius: 20px;
         }
 
-        .chat-message-item {
-            background: rgba(255, 255, 255, 0.4);
-            padding: 6px 12px;
-            border-radius: 24px;
-            border-left: 4px solid #7b95d0;
-            backdrop-filter: blur(2px);
-            margin-bottom: 2px;
+        ::-webkit-scrollbar {
+            width: 6px;
         }
-
-        .chat-message-item.system-msg {
-            border-left-color: #e74c6f;
-            background: rgba(231, 76, 79, 0.1);
-            font-style: italic;
-            color: #c0392b;
+        ::-webkit-scrollbar-thumb {
+            background: #b0c4e0;
+            border-radius: 20px;
         }
-
-        .chat-input-area {
-            display: flex;
-            gap: 10px;
-            margin-top: 6px;
-        }
-
-        .chat-input-area input {
-            flex: 1;
-            padding: 8px 16px;
-            border-radius: 40px;
-            border: 1px solid rgba(150, 170, 220, 0.5);
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(2px);
-            outline: none;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-
-        .chat-input-area input:focus {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #6f8ed6;
-            box-shadow: 0 0 0 3px rgba(100, 140, 220, 0.2);
-        }
-
-        .chat-input-area button {
-            padding: 8px 18px;
-            border: none;
-            border-radius: 40px;
-            background: #6f8ed6;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 4px 8px rgba(70, 100, 200, 0.2);
-        }
-
-        .chat-input-area button:hover {
-            background: #5a77b8;
-            transform: scale(1.02);
-            box-shadow: 0 6px 12px rgba(70, 100, 200, 0.3);
-        }
-
-        .grid-item i {
-            color: #5b73b0;
-            width: 24px;
-        }
-
-        .info-highlight {
-            background: rgba(200, 220, 255, 0.2);
-            border-radius: 12px;
-            padding: 4px 10px;
-        }
-
-        /* 弹窗样式 */
-        .toast-popup {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: rgba(44, 62, 80, 0.95);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 16px;
-            font-size: 0.95rem;
-            z-index: 9999;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-            pointer-events: none;
-            text-align: center;
-            max-width: 90%;
-        }
-
-        .toast-popup.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast-popup .toast-time {
-            font-weight: 300;
-            opacity: 0.8;
-            font-size: 0.85rem;
-            margin-top: 4px;
-        }
-
-        /* ===== 响应式 ===== */
-        @media (max-width: 1100px) {
-            .grid-background {
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto auto auto;
-                gap: 12px;
-                padding: 16px;
-            }
-            .profile-grid {
-                grid-column: 1;
-                grid-row: 1;
-            }
-            .chat-grid {
-                grid-column: 1 / 3;
-                grid-row: 4;
-                min-height: 300px;
-            }
-            .announcement-grid {
-                grid-column: 2;
-                grid-row: 1;
-            }
-            .contact-grid {
-                grid-column: 2;
-                grid-row: 2;
-            }
-            .placeholder-grid {
-                grid-column: 2;
-                grid-row: 3;
-            }
-            .announcement-grid.expanded {
-                grid-row: 1 / 3;
-                grid-column: 2;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .grid-background {
-                grid-template-columns: 1fr;
-                padding: 10px;
-                gap: 10px;
-            }
-            .profile-grid {
-                grid-column: 1;
-                grid-row: 1;
-            }
-            .announcement-grid {
-                grid-column: 1;
-                grid-row: 2;
-            }
-            .contact-grid {
-                grid-column: 1;
-                grid-row: 3;
-            }
-            .placeholder-grid {
-                grid-column: 1;
-                grid-row: 4;
-            }
-            .chat-grid {
-                grid-column: 1;
-                grid-row: 5;
-                min-height: 280px;
-            }
-            .announcement-grid.expanded {
-                grid-row: 2 / 4;
-                grid-column: 1;
-            }
-            .chat-messages {
-                min-height: 150px;
-                max-height: 200px;
-            }
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
     </style>
 </head>
 <body>
 
 <div class="site-wrapper">
+    <!-- 开幕层 -->
     <div id="introOverlay" class="intro-overlay">
         <div id="cube" class="cube">✦</div>
     </div>
 
-    <div id="gridContainer" class="grid-background">
-        <!-- 格1: 个人简介 (左侧大块) -->
-        <div class="grid-item profile-grid">
-            <h3><i class="fas fa-user-astronaut"></i> 捷捷捷捷</h3>
-            <p>欢迎你来到我的个人网站。————————我是  <strong>捷捷捷捷</strong> </p>
-            <p style="margin-top: 8px; font-size: 0.9rem;"></p>
-            <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
-                <span class="info-highlight"># </span>
-            </div>
-        </div>
+    <!-- 遮罩 -->
+    <div id="popupOverlay" class="popup-overlay"></div>
 
-        <!-- 格2: 聊天栏 (中间，竖长) -->
-        <div class="grid-item chat-grid">
-            <div class="chat-box">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-                    <h3 style="border-bottom: none; margin-bottom: 0;"><i class="fas fa-comment-dots"></i> 公开留言板</h3>
-                    <button id="clearChatBtn" style="background: #e74c6f; color: white; border: none; border-radius: 20px; padding: 2px 14px; font-size: 0.7rem; cursor: pointer; opacity: 0.6;">清空留言</button>
-                </div>
-                <div id="chatMessages" class="chat-messages">
-                    <!-- 初始内容会由 JS 生成 -->
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" id="chatInput" placeholder="输入留言..." maxlength="120">
-                    <button id="sendChatBtn"><i class="fas fa-paper-plane"></i> 发送</button>
-                </div>
-                <p style="font-size: 0.65rem; opacity: 0.6; margin-top: 4px; text-align: right;">💬 所有人可见 · 暂时保留</p>
-            </div>
+    <!-- 弹出面板 (公告板) -->
+    <div id="popupPanel" class="popup-panel">
+        <div class="panel-header">
+            <h3><i class="fas fa-bullhorn"></i> 公告板</h3>
+            <button class="panel-close" id="panelClose"><i class="fas fa-times"></i></button>
         </div>
-
-        <!-- 格3: 公告栏 (右上，点击展开) -->
-        <div class="grid-item announcement-grid" id="announcementGrid">
-            <h3><i class="fas fa-bullhorn"></i> 公告 <span class="expand-hint">(点击展开)</span></h3>
+        <div class="panel-content">
             <ul>
                 <li>该网站暂时处于测试阶段</li>
-                <li>暂无</li>
-                <li>暂无</li>
+                <li>欢迎提出宝贵建议</li>
+                <li>更多内容正在准备中...</li>
+                <li>预计正式上线时间：待定</li>
+                <li>✨ 感谢你的访问</li>
             </ul>
-            <div class="extra-content">
-                <p>📢 更多公告内容</p>
-                <p>• 网站正在建设中</p>
-                <p>• 欢迎提出建议</p>
-                <p>• 预计正式上线时间：待定</p>
+            <p style="margin-top: 16px; font-size: 0.85rem; opacity: 0.6; text-align: center;">滚动可查看更多内容</p>
+        </div>
+    </div>
+
+    <!-- 主内容 -->
+    <div id="mainContent" class="main-content">
+        <!-- 顶部区域 -->
+        <div class="top-section">
+            <!-- 左侧：个人简介卡片 -->
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <img 
+                        src="https://i.imgs.ovh/2026/08/27/39491e380b4a522006f840705c8117b3.jpg" 
+                        alt="头像" 
+                        id="avatarImg"
+                        onerror="this.onerror=null; this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=jiejie';"
+                        style="width:100%; height:100%; object-fit:cover;"
+                    >
+                </div>
+                <h2>捷捷捷捷</h2>
+                <p class="subtitle">欢迎你来到我的个人网站。<br>我是 <strong>捷捷捷捷</strong></p>
+            </div>
+
+            <!-- 右侧 -->
+            <div class="right-side">
+                <!-- 实时时间 -->
+                <div class="time-box" id="timeBox">
+                    <span id="timeDisplay">00:00:00</span>
+                    <div class="date-text" id="dateDisplay">----年--月--日</div>
+                </div>
+
+                <!-- 小方块们 -->
+                <div class="mini-blocks">
+                    <div class="mini-block" id="announcementBtn">
+                        <i class="fas fa-bullhorn"></i> 公告
+                    </div>
+                    <div class="mini-block" id="blankBtn1">
+                        <i class="fas fa-ellipsis-h"></i> 空白
+                    </div>
+                    <div class="mini-block" id="blankBtn2">
+                        <i class="fas fa-ellipsis-h"></i> 空白
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 格4: 联系 -->
-        <div class="grid-item contact-grid">
-            <h3><i class="fas fa-paper-plane"></i> 联系</h3>
-            <p><i class="fas fa-envelope" style="width: 20px;"></i> 你能看到这个网站说明你有我VX😄</p>
-        </div>
+        <!-- 中间弹性空白区域，把底部推到底部 -->
+        <div class="middle-spacer"></div>
 
-        <!-- 格5: 占位 -->
-        <div class="grid-item placeholder-grid">
-            <h3><i class="fas fa-star"></i> 占个位子</h3>
-            <ul>
-                <li>？</li>
-            </ul>
-            <p style="margin-top: 6px; font-size: 0.8rem; opacity: 0.7;">不知道写点啥呢还</p>
+        <!-- 底部区域 -->
+        <div class="footer-section">
+            <div class="footer-links">
+                <!-- GitHub 链接（占位） -->
+                <div class="footer-link-group">
+                    <a href="#" class="link-main">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <span class="link-hint">——</span>
+                </div>
+
+                <!-- Bilibili 链接：跳转到指定空间，带小字 -->
+                <div class="footer-link-group">
+                    <a href="https://space.bilibili.com/518073863?spm_id_from=333.1007.0.0" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="link-main">
+                        <i class="fab fa-bilibili"></i> bilibili
+                    </a>
+                    <span class="link-hint">点我跳转</span>
+                </div>
+            </div>
+            <div class="footer-copy">© 2026 — 捷捷捷捷 · 保留所有权利</div>
         </div>
     </div>
 </div>
 
-<!-- 弹窗 -->
-<div id="toastPopup" class="toast-popup">
-    <div id="toastMessage">聊天记录已被清空</div>
-    <div class="toast-time" id="toastTime"></div>
-</div>
-
 <script>
     (function() {
-        // ---------- 1. 开幕动画 + 玻璃碎响 ----------
+        // ---------- 1. 开幕动画 ----------
         const overlay = document.getElementById('introOverlay');
         const cube = document.getElementById('cube');
-        const grid = document.getElementById('gridContainer');
+        const mainContent = document.getElementById('mainContent');
 
         function playGlassBreak() {
             try {
@@ -539,7 +633,7 @@
                     audioCtx.close().catch(() => {});
                 };
             } catch (e) {
-                console.log('音频不可用 (无声音)');
+                console.log('音频不可用');
             }
         }
 
@@ -548,7 +642,7 @@
             playGlassBreak();
             setTimeout(() => {
                 overlay.style.opacity = '0';
-                grid.classList.add('active');
+                mainContent.classList.add('active');
                 setTimeout(() => {
                     overlay.style.display = 'none';
                 }, 800);
@@ -557,141 +651,60 @@
 
         window.addEventListener('load', startIntro);
 
-        // ---------- 2. 公告栏点击展开 ----------
-        const announcementGrid = document.getElementById('announcementGrid');
+        // ---------- 2. 实时时钟 ----------
+        function updateClock() {
+            const now = new Date();
+            const timeStr = String(now.getHours()).padStart(2, '0') + ':' +
+                            String(now.getMinutes()).padStart(2, '0') + ':' +
+                            String(now.getSeconds()).padStart(2, '0');
+            const dateStr = now.getFullYear() + '年' +
+                            String(now.getMonth() + 1).padStart(2, '0') + '月' +
+                            String(now.getDate()).padStart(2, '0') + '日';
+            document.getElementById('timeDisplay').textContent = timeStr;
+            document.getElementById('dateDisplay').textContent = dateStr;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
 
-        announcementGrid.addEventListener('click', function(e) {
-            if (e.target.closest('#clearChatBtn')) return;
-            this.classList.toggle('expanded');
+        // ---------- 3. 公告板弹出 ----------
+        const panel = document.getElementById('popupPanel');
+        const overlay2 = document.getElementById('popupOverlay');
+        const announcementBtn = document.getElementById('announcementBtn');
+        const panelClose = document.getElementById('panelClose');
+
+        function openPanel() {
+            panel.classList.add('open');
+            overlay2.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePanel() {
+            panel.classList.remove('open');
+            overlay2.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        announcementBtn.addEventListener('click', openPanel);
+        panelClose.addEventListener('click', closePanel);
+        overlay2.addEventListener('click', closePanel);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePanel();
         });
 
-        // ---------- 3. 公共聊天栏 ----------
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendChatBtn');
-
-        function initChatMessages() {
-            chatMessages.innerHTML = '';
-            const defaultMsgs = ['这里是聊天栏', '快来聊些什么😮'];
-            defaultMsgs.forEach(text => {
-                addMessageToDOM(text);
-            });
-            saveMessages();
-        }
-
-        function loadMessages() {
-            try {
-                const stored = localStorage.getItem('publicChat_messages');
-                if (stored) {
-                    const msgs = JSON.parse(stored);
-                    if (Array.isArray(msgs) && msgs.length) {
-                        chatMessages.innerHTML = '';
-                        msgs.forEach(text => {
-                            addMessageToDOM(text);
-                        });
-                        return;
-                    }
-                }
-                initChatMessages();
-            } catch (e) {
-                initChatMessages();
-            }
-        }
-
-        function addMessage(text, isSystem = false) {
-            if (!text.trim()) return;
-            const clean = text.trim().slice(0, 120);
-            addMessageToDOM(clean, isSystem);
-            saveMessages();
-        }
-
-        function addMessageToDOM(text, isSystem = false) {
-            const div = document.createElement('div');
-            div.className = 'chat-message-item';
-            if (isSystem) {
-                div.classList.add('system-msg');
-            }
-            div.textContent = text;
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function saveMessages() {
-            const items = chatMessages.querySelectorAll('.chat-message-item');
-            const texts = Array.from(items).map(el => el.textContent);
-            try {
-                localStorage.setItem('publicChat_messages', JSON.stringify(texts));
-            } catch (e) {}
-        }
-
-        function handleSend() {
-            const text = chatInput.value.trim();
-            if (!text) return;
-            addMessage(text);
-            chatInput.value = '';
-            chatInput.focus();
-        }
-
-        sendBtn.addEventListener('click', handleSend);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSend();
-            }
+        // ---------- 4. 空白方块占位点击提示 ----------
+        document.getElementById('blankBtn1').addEventListener('click', function() {
+            alert('📦 这个板块还在建设中，敬请期待！');
         });
 
-        // ---------- 4. 清空聊天功能 ----------
-        const clearBtn = document.getElementById('clearChatBtn');
-        const ADMIN_PASSWORD = '840526-hjj';
-        const toastPopup = document.getElementById('toastPopup');
-        const toastMessage = document.getElementById('toastMessage');
-        const toastTime = document.getElementById('toastTime');
+        document.getElementById('blankBtn2').addEventListener('click', function() {
+            alert('📦 这个板块还在建设中，敬请期待！');
+        });
 
-        function showToast(msg, timeStr) {
-            toastMessage.textContent = msg;
-            toastTime.textContent = timeStr || '';
-            toastPopup.classList.add('show');
-            clearTimeout(window.toastTimer);
-            window.toastTimer = setTimeout(() => {
-                toastPopup.classList.remove('show');
-            }, 5000);
-        }
-
-        function clearChatWithAuth() {
-            const userInput = prompt('请输入管理员密码以清空所有留言：');
-            
-            if (userInput === null) {
-                return;
-            }
-            
-            if (userInput === ADMIN_PASSWORD) {
-                const now = new Date();
-                const timeStr = now.getFullYear() + '年' + 
-                                String(now.getMonth() + 1).padStart(2, '0') + '月' + 
-                                String(now.getDate()).padStart(2, '0') + '日 ' +
-                                String(now.getHours()).padStart(2, '0') + ':' + 
-                                String(now.getMinutes()).padStart(2, '0') + ':' + 
-                                String(now.getSeconds()).padStart(2, '0');
-                
-                chatMessages.innerHTML = '';
-                const defaultMsgs = ['这里是聊天栏', '快来聊些什么😮'];
-                defaultMsgs.forEach(text => {
-                    addMessageToDOM(text);
-                });
-                saveMessages();
-                
-                showToast('聊天已于 ' + timeStr + ' 被清空', '');
-                alert('✅ 聊天记录已清空！');
-            } else {
-                alert('❌ 密码错误，清空操作已取消。');
-            }
-        }
-
-        if (clearBtn) {
-            clearBtn.addEventListener('click', clearChatWithAuth);
-        }
-
-        loadMessages();
+        // ---------- 5. 头像点击更换提示 ----------
+        document.getElementById('avatarImg').addEventListener('click', function() {
+            alert('🖼️ 点击上传头像功能\n(您可以直接替换 img 的 src 属性)');
+        });
 
         console.log('✨ 捷捷捷捷的个人网站已启动');
     })();
