@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>捷捷捷捷的个人网站</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f0f4ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .site-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(145deg, #e0f0ff 0%, #fce4ec 100%);
+            background-blend-mode: overlay;
+        }
+
+        .intro-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at 30% 40%, #fff9f9, #d4e8ff, #fce4ec);
+            pointer-events: none;
+            transition: opacity 0.7s ease;
+        }
+
+        .cube {
+            width: 120px;
+            height: 120px;
+            background: #b8d0ff;
+            box-shadow: 0 15px 40px rgba(90, 120, 200, 0.3);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 300;
+            color: #2b3a67;
+            letter-spacing: 2px;
+            transition: all 0.1s;
+            animation: floatPulse 2.2s infinite alternate ease-in-out;
+            will-change: transform, opacity;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatPulse {
+            0% { transform: scale(1) translateY(0px); box-shadow: 0 10px 30px rgba(70, 100, 200, 0.2); }
+            100% { transform: scale(1.03) translateY(-8px); box-shadow: 0 25px 50px rgba(70, 120, 220, 0.4); }
+        }
+
+        .cube-broken {
+            animation: shatter 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards !important;
+            pointer-events: none;
+        }
+
+        @keyframes shatter {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; border-radius: 12px; }
+            20% { transform: scale(1.2) rotate(8deg); opacity: 0.9; }
+            50% { transform: scale(0.4) rotate(-15deg) translateX(-30px) translateY(20px); opacity: 0.6; border-radius: 60% 20% 70% 10%; }
+            80% { transform: scale(0.1) rotate(30deg) translateX(60px) translateY(-40px); opacity: 0.3; border-radius: 80% 10% 40% 60%; }
+            100% { transform: scale(0) rotate(60deg) translateX(120px) translateY(60px); opacity: 0; border-radius: 100%; }
+        }
+
+        .grid-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr 320px 280px;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 16px;
+            padding: 25px 35px;
+            opacity: 0;
+            transition: opacity 1.2s ease, backdrop-filter 0.6s;
+            backdrop-filter: blur(0px);
+            background: rgba(255, 250, 250, 0.25);
+            pointer-events: none;
+        }
+
+        .grid-background.active {
+            opacity: 1;
+            backdrop-filter: blur(12px) brightness(1.04);
+            pointer-events: auto;
+            background: rgba(255, 248, 248, 0.3);
+            box-shadow: inset 0 0 40px rgba(255, 240, 240, 0.3);
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(4px);
+            border-radius: 32px 12px 32px 12px;
+            box-shadow: 0 8px 24px rgba(120, 140, 200, 0.15), 0 2px 6px rgba(0,0,0,0.02);
+            padding: 20px 18px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #1e2b4a;
+            font-weight: 400;
+            overflow-y: auto;
+            word-break: break-word;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 16px 32px rgba(70, 100, 200, 0.2);
+            backdrop-filter: blur(8px);
+        }
+
+        .grid-item h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            border-bottom: 2px solid rgba(150, 180, 255, 0.3);
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .grid-item p, .grid-item li {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1f2a44;
+        }
+
+        .grid-item ul {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        .grid-item ul li::before {
+            content: "✦ ";
+            color: #6a7fc0;
+        }
+
+        /* ===== 新布局 ===== */
+        .profile-grid {
+            grid-column: 1;
+            grid-row: 1 / 4;
+        }
+
+        .chat-grid {
+            grid-column: 2;
+            grid-row: 1 / 4;
+            min-height: 0;
+        }
+
+        .announcement-grid {
+            grid-column: 3;
+            grid-row: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .announcement-grid.expanded {
+            grid-row: 1 / 3;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 60px rgba(70, 100, 200, 0.3);
+        }
+
+        .announcement-grid .expand-hint {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 4px;
+            opacity: 0.6;
+        }
+
+        .announcement-grid.expanded .expand-hint {
+            display: none;
+        }
+
+        .announcement-grid .extra-content {
+            display: none;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(150,180,255,0.3);
+        }
+
+        .announcement-grid.expanded .extra-content {
+            display: block;
+        }
+
+        .contact-grid {
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        .placeholder-grid {
+            grid-column: 3;
+            grid-row: 3;
+        }
+
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 8px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 14px 16px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            scrollbar-width: thin;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #b0c4e0;
+            border-radius: 20px;
+        }
+
+        .chat-message-item {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 6px 12px;
+            border-radius: 24px;
+            border-left: 4px solid #7b95d0;
+            backdrop-filter: blur(2px);
+            margin-bottom: 2px;
+        }
+
+        .chat-message-item.system-msg {
+            border-left-color: #e74c6f;
+            background: rgba(231, 76, 79, 0.1);
+            font-style: italic;
+            color: #c0392b;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(150, 170, 220, 0.5);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
+            outline: none;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .chat-input-area input:focus {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #6f8ed6;
+            box-shadow: 0 0 0 3px rgba(100, 140, 220, 0.2);
+        }
+
+        .chat-input-area button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 40px;
+            background: #6f8ed6;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 8px rgba(70, 100, 200, 0.2);
+        }
+
+        .chat-input-area button:hover {
+            background: #5a77b8;
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(70, 100, 200, 0.3);
+        }
+
+        .grid-item i {
+            color: #5b73b0;
+            width: 24px;
+        }
+
+        .info-highlight {
+            background: rgba(200, 220, 255, 0.2);
+            border-radius: 12px;
+            padding: 4px 10px;
+        }
+
+        /* 弹窗样式 */
+        .toast-popup {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .toast-popup.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-popup .toast-time {
+            font-weight: 300;
+            opacity: 0.8;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 1100px) {
+            .grid-background {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto auto auto;
+                gap: 12px;
+                padding: 16px;
+            }
+            .profile-grid {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            .chat-grid {
+                grid-column: 1 / 3;
+                grid-row: 4;
+                min-height: 300px;
+            }
+            .announcement-grid {
+                grid-column: 2;
+                grid-row: 1;
+            }
+            .contact-grid {
+                grid-column: 2;
+                grid-row: 2;
+            }
+            .placeholder-grid {
+                grid-column: 2;
+                grid-row: 3;
+            }
+            .announcement-grid.expanded {
+                grid-row: 1 / 3;
+                grid-column: 2;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .grid-background {
+                grid-template-columns: 1fr;
+                padding: 10px;
+                gap: 10px;
+            }
+            .profile-grid {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            .announcement-grid {
+                grid-column: 1;
+                grid-row: 2;
+            }
+            .contact-grid {
+                grid-column: 1;
+                grid-row: 3;
+            }
+            .placeholder-grid {
+                grid-column: 1;
+                grid-row: 4;
+            }
+            .chat-grid {
+                grid-column: 1;
+                grid-row: 5;
+                min-height: 280px;
+            }
+            .announcement-grid.expanded {
+                grid-row: 2 / 4;
+                grid-column: 1;
+            }
+            .chat-messages {
+                min-height: 150px;
+                max-height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="site-wrapper">
+    <div id="introOverlay" class="intro-overlay">
+        <div id="cube" class="cube">✦</div>
+    </div>
+
+    <div id="gridContainer" class="grid-background">
+        <!-- 格1: 个人简介 (左侧大块) -->
+        <div class="grid-item profile-grid">
+            <h3><i class="fas fa-user-astronaut"></i> 捷捷捷捷</h3>
+            <p>欢迎你来到我的个人网站。————————我是  <strong>捷捷捷捷</strong> </p>
+            <p style="margin-top: 8px; font-size: 0.9rem;"></p>
+            <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="info-highlight"># </span>
+            </div>
+        </div>
+
+        <!-- 格2: 聊天栏 (中间，竖长) -->
+        <div class="grid-item chat-grid">
+            <div class="chat-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                    <h3 style="border-bottom: none; margin-bottom: 0;"><i class="fas fa-comment-dots"></i> 公开留言板</h3>
+                    <button id="clearChatBtn" style="background: #e74c6f; color: white; border: none; border-radius: 20px; padding: 2px 14px; font-size: 0.7rem; cursor: pointer; opacity: 0.6;">清空留言</button>
+                </div>
+                <div id="chatMessages" class="chat-messages">
+                    <!-- 初始内容会由 JS 生成 -->
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="输入留言..." maxlength="120">
+                    <button id="sendChatBtn"><i class="fas fa-paper-plane"></i> 发送</button>
+                </div>
+                <p style="font-size: 0.65rem; opacity: 0.6; margin-top: 4px; text-align: right;">💬 所有人可见 · 暂时保留</p>
+            </div>
+        </div>
+
+        <!-- 格3: 公告栏 (右上，点击展开) -->
+        <div class="grid-item announcement-grid" id="announcementGrid">
+            <h3><i class="fas fa-bullhorn"></i> 公告 <span class="expand-hint">(点击展开)</span></h3>
+            <ul>
+                <li>该网站暂时处于测试阶段</li>
+                <li>暂无</li>
+                <li>暂无</li>
+            </ul>
+            <div class="extra-content">
+                <p>📢 更多公告内容</p>
+                <p>• 网站正在建设中</p>
+                <p>• 欢迎提出建议</p>
+                <p>• 预计正式上线时间：待定</p>
+            </div>
+        </div>
+
+        <!-- 格4: 联系 -->
+        <div class="grid-item contact-grid">
+            <h3><i class="fas fa-paper-plane"></i> 联系</h3>
+            <p><i class="fas fa-envelope" style="width: 20px;"></i> 你能看到这个网站说明你有我VX😄</p>
+        </div>
+
+        <!-- 格5: 占位 -->
+        <div class="grid-item placeholder-grid">
+            <h3><i class="fas fa-star"></i> 占个位子</h3>
+            <ul>
+                <li>？</li>
+            </ul>
+            <p style="margin-top: 6px; font-size: 0.8rem; opacity: 0.7;">不知道写点啥呢还</p>
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="toastPopup" class="toast-popup">
+    <div id="toastMessage">聊天记录已被清空</div>
+    <div class="toast-time" id="toastTime"></div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 1. 开幕动画 + 玻璃碎响 ----------
+        const overlay = document.getElementById('introOverlay');
+        const cube = document.getElementById('cube');
+        const grid = document.getElementById('gridContainer');
+
+        function playGlassBreak() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = audioCtx.sampleRate * 0.25;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    const t = i / bufferSize;
+                    const env = Math.exp(-t * 8) * (0.7 + 0.3 * Math.sin(t * 120));
+                    const noise = (Math.random() * 2 - 1) * env;
+                    const shatter = 0.3 * Math.sin(t * 700) * Math.exp(-t * 6);
+                    data[i] = noise * 0.8 + shatter * 0.6;
+                }
+                const source = audioCtx.createBufferSource();
+                source.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1800;
+                filter.Q.value = 1.2;
+                const gain = audioCtx.createGain();
+                gain.gain.value = 0.6;
+                source.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                source.start();
+                source.onended = () => {
+                    audioCtx.close().catch(() => {});
+                };
+            } catch (e) {
+                console.log('音频不可用 (无声音)');
+            }
+        }
+
+        function startIntro() {
+            cube.classList.add('cube-broken');
+            playGlassBreak();
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                grid.classList.add('active');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 800);
+            }, 700);
+        }
+
+        window.addEventListener('load', startIntro);
+
+        // ---------- 2. 公告栏点击展开 ----------
+        const announcementGrid = document.getElementById('announcementGrid');
+
+        announcementGrid.addEventListener('click', function(e) {
+            if (e.target.closest('#clearChatBtn')) return;
+            this.classList.toggle('expanded');
+        });
+
+        // ---------- 3. 公共聊天栏 ----------
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendChatBtn');
+
+        function initChatMessages() {
+            chatMessages.innerHTML = '';
+            const defaultMsgs = ['这里是聊天栏', '快来聊些什么😮'];
+            defaultMsgs.forEach(text => {
+                addMessageToDOM(text);
+            });
+            saveMessages();
+        }
+
+        function loadMessages() {
+            try {
+                const stored = localStorage.getItem('publicChat_messages');
+                if (stored) {
+                    const msgs = JSON.parse(stored);
+                    if (Array.isArray(msgs) && msgs.length) {
+                        chatMessages.innerHTML = '';
+                        msgs.forEach(text => {
+                            addMessageToDOM(text);
+                        });
+                        return;
+                    }
+                }
+                initChatMessages();
+            } catch (e) {
+                initChatMessages();
+            }
+        }
+
+        function addMessage(text, isSystem = false) {
+            if (!text.trim()) return;
+            const clean = text.trim().slice(0, 120);
+            addMessageToDOM(clean, isSystem);
+            saveMessages();
+        }
+
+        function addMessageToDOM(text, isSystem = false) {
+            const div = document.createElement('div');
+            div.className = 'chat-message-item';
+            if (isSystem) {
+                div.classList.add('system-msg');
+            }
+            div.textContent = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function saveMessages() {
+            const items = chatMessages.querySelectorAll('.chat-message-item');
+            const texts = Array.from(items).map(el => el.textContent);
+            try {
+                localStorage.setItem('publicChat_messages', JSON.stringify(texts));
+            } catch (e) {}
+        }
+
+        function handleSend() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            addMessage(text);
+            chatInput.value = '';
+            chatInput.focus();
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSend();
+            }
+        });
+
+        // ---------- 4. 清空聊天功能 ----------
+        const clearBtn = document.getElementById('clearChatBtn');
+        const ADMIN_PASSWORD = '840526-hjj';
+        const toastPopup = document.getElementById('toastPopup');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastTime = document.getElementById('toastTime');
+
+        function showToast(msg, timeStr) {
+            toastMessage.textContent = msg;
+            toastTime.textContent = timeStr || '';
+            toastPopup.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toastPopup.classList.remove('show');
+            }, 5000);
+        }
+
+        function clearChatWithAuth() {
+            const userInput = prompt('请输入管理员密码以清空所有留言：');
+            
+            if (userInput === null) {
+                return;
+            }
+            
+            if (userInput === ADMIN_PASSWORD) {
+                const now = new Date();
+                const timeStr = now.getFullYear() + '年' + 
+                                String(now.getMonth() + 1).padStart(2, '0') + '月' + 
+                                String(now.getDate()).padStart(2, '0') + '日 ' +
+                                String(now.getHours()).padStart(2, '0') + ':' + 
+                                String(now.getMinutes()).padStart(2, '0') + ':' + 
+                                String(now.getSeconds()).padStart(2, '0');
+                
+                chatMessages.innerHTML = '';
+                const defaultMsgs = ['这里是聊天栏', '快来聊些什么😮'];
+                defaultMsgs.forEach(text => {
+                    addMessageToDOM(text);
+                });
+                saveMessages();
+                
+                showToast('聊天已于 ' + timeStr + ' 被清空', '');
+                alert('✅ 聊天记录已清空！');
+            } else {
+                alert('❌ 密码错误，清空操作已取消。');
+            }
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', clearChatWithAuth);
+        }
+
+        loadMessages();
+
+        console.log('✨ 捷捷捷捷的个人网站已启动');
+    })();
+</script>
+</body>
+</html>
