@@ -180,6 +180,49 @@
             min-width: 0;
         }
 
+        /* 音乐 + 时间 行 */
+        .music-time-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        /* 音乐按钮 */
+        #musicBtn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 16px rgba(120, 140, 200, 0.1);
+            font-size: 1.2rem;
+            color: #1e2b4a;
+            flex-shrink: 0;
+        }
+
+        #musicBtn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 24px rgba(120, 140, 200, 0.25);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        #musicBtn.playing {
+            box-shadow: 0 0 20px rgba(123, 149, 208, 0.4);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* 实时时间 */
         .time-box {
             background: rgba(255, 255, 255, 0.6);
@@ -252,7 +295,6 @@
             transform-origin: top right;
         }
 
-        /* 悬停时整体放大 */
         .memes-section:hover {
             transform: scale(1.3);
             box-shadow: 0 20px 60px rgba(70, 100, 200, 0.25);
@@ -261,7 +303,6 @@
             border-color: rgba(123, 149, 208, 0.3);
         }
 
-        /* 点击提示 */
         .memes-section .click-hint {
             position: absolute;
             bottom: 6px;
@@ -340,32 +381,6 @@
             z-index: 10;
             box-shadow: 0 8px 30px rgba(70, 100, 200, 0.3);
             border-color: #7b95d0;
-        }
-
-        .meme-item.upload-btn {
-            background: rgba(200, 215, 240, 0.15);
-            border: 2px dashed rgba(123, 149, 208, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: #7b95d0;
-            transition: all 0.3s;
-            cursor: pointer;
-            aspect-ratio: 9 / 16;
-        }
-
-        .meme-item.upload-btn:hover {
-            background: rgba(200, 215, 240, 0.3);
-            border-color: #7b95d0;
-        }
-
-        .meme-item.upload-btn i {
-            transition: transform 0.3s;
-        }
-
-        .meme-item.upload-btn:hover i {
-            transform: rotate(90deg);
         }
 
         .memes-empty {
@@ -471,7 +486,6 @@
             background: #c0392b;
         }
 
-        /* 全屏相册网格 - 一行6列 */
         .album-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -505,61 +519,6 @@
             display: block;
         }
 
-        .album-grid .album-item .delete-btn {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: rgba(231, 76, 79, 0.85);
-            border: none;
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 0.7rem;
-            transition: 0.2s;
-            opacity: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .album-grid .album-item:hover .delete-btn {
-            opacity: 1;
-        }
-
-        .album-grid .album-item .delete-btn:hover {
-            background: #c0392b;
-            transform: scale(1.1);
-        }
-
-        .album-grid .album-item.upload-album-btn {
-            background: rgba(200, 215, 240, 0.15);
-            border: 2px dashed rgba(123, 149, 208, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: #7b95d0;
-            cursor: pointer;
-            transition: 0.3s;
-            aspect-ratio: 1 / 1;
-        }
-
-        .album-grid .album-item.upload-album-btn:hover {
-            background: rgba(200, 215, 240, 0.3);
-            border-color: #7b95d0;
-            transform: scale(1.04);
-        }
-
-        .album-grid .album-item.upload-album-btn i {
-            transition: transform 0.3s;
-        }
-
-        .album-grid .album-item.upload-album-btn:hover i {
-            transform: rotate(90deg);
-        }
-
         .album-empty {
             grid-column: 1 / -1;
             text-align: center;
@@ -573,10 +532,6 @@
             display: block;
             margin-bottom: 16px;
             opacity: 0.3;
-        }
-
-        #fileInput {
-            display: none;
         }
 
         /* 中间弹性空白区域 */
@@ -767,6 +722,10 @@
                 justify-content: flex-start;
             }
 
+            .music-time-row {
+                justify-content: flex-start;
+            }
+
             .memes-section {
                 max-width: 160px;
                 align-self: flex-start;
@@ -813,6 +772,12 @@
                 font-size: 0.85rem;
                 padding: 6px 14px;
                 min-width: 80px;
+            }
+
+            #musicBtn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
 
             .footer-section .footer-links {
@@ -921,8 +886,6 @@
         <div class="album-header">
             <h2><i class="fas fa-image"></i> Memes 相册</h2>
             <div class="album-actions">
-                <button class="btn-upload-album" id="albumUploadBtn"><i class="fas fa-plus"></i> 上传</button>
-                <button class="btn-clear-album" id="albumClearBtn"><i class="fas fa-trash"></i> 清空</button>
                 <button class="btn-close-album" id="albumCloseBtn"><i class="fas fa-times"></i> 关闭</button>
             </div>
         </div>
@@ -952,10 +915,18 @@
 
             <!-- 右侧 -->
             <div class="right-side">
-                <!-- 实时时间 -->
-                <div class="time-box" id="timeBox">
-                    <span id="timeDisplay">00:00:00</span>
-                    <div class="date-text" id="dateDisplay">----年--月--日</div>
+                <!-- 音乐 + 时间 行 -->
+                <div class="music-time-row">
+                    <!-- 音乐播放按钮 -->
+                    <div id="musicBtn">
+                        <i class="fas fa-play" id="musicIcon"></i>
+                    </div>
+
+                    <!-- 实时时间 -->
+                    <div class="time-box" id="timeBox">
+                        <span id="timeDisplay">00:00:00</span>
+                        <div class="date-text" id="dateDisplay">----年--月--日</div>
+                    </div>
                 </div>
 
                 <!-- 小方块们 -->
@@ -971,11 +942,11 @@
                     </div>
                 </div>
 
-                <!-- ===== Memes 相册模块（竖长方形，点击进入全屏） ===== -->
+                <!-- ===== Memes 相册模块 ===== -->
                 <div class="memes-section" id="memesSection">
                     <div class="memes-header">
                         <h3><i class="fas fa-image"></i> Memes</h3>
-                        <span class="hint-text">点击可以进入哟</span>
+                        <span class="hint-text">点击进入</span>
                     </div>
                     <div class="memes-grid" id="memesGrid">
                         <!-- 由 JavaScript 动态生成 -->
@@ -984,9 +955,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 隐藏的文件输入 -->
-        <input type="file" id="fileInput" accept="image/*" multiple>
 
         <!-- 中间弹性空白区域 -->
         <div class="middle-spacer"></div>
@@ -1126,68 +1094,37 @@
         });
 
         // ============================================================
-        // ========== 6. Memes 相册功能 ==========
+        // ========== 6. Memes 相册（纯展示，无默认图片） ==========
         // ============================================================
-        const STORAGE_KEY = 'memes_images';
-        const ADMIN_PASSWORD = '840526';
-        const MAX_IMAGES = 200;
-
         const memesGrid = document.getElementById('memesGrid');
         const albumGrid = document.getElementById('albumGrid');
-        const fileInput = document.getElementById('fileInput');
         const memesSection = document.getElementById('memesSection');
         const albumPage = document.getElementById('albumPage');
-
-        // 相册页按钮
-        const albumUploadBtn = document.getElementById('albumUploadBtn');
-        const albumClearBtn = document.getElementById('albumClearBtn');
         const albumCloseBtn = document.getElementById('albumCloseBtn');
 
-        // ---------- 数据存储 ----------
-        function getStoredImages() {
-            try {
-                const data = localStorage.getItem(STORAGE_KEY);
-                return data ? JSON.parse(data) : [];
-            } catch (e) {
-                return [];
-            }
-        }
-
-        function saveStoredImages(images) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
-            } catch (e) {}
-        }
-
-        function getDefaultImages() {
-            return [
-                'https://via.placeholder.com/300/7b95d0/ffffff?text=Meme+1',
-                'https://via.placeholder.com/300/6a7fc0/ffffff?text=Meme+2',
-                'https://via.placeholder.com/300/8aa8e0/ffffff?text=Meme+3',
-                'https://via.placeholder.com/300/5a77b8/ffffff?text=Meme+4',
-                'https://via.placeholder.com/300/9ab8f0/ffffff?text=Meme+5',
-                'https://via.placeholder.com/300/4a67a8/ffffff?text=Meme+6',
-            ];
-        }
+        // ---------- 您在这里添加图片链接 ----------
+        // 格式：'https://xxxxx.jpg',
+        // 想加多少加多少，一行一个，用逗号分隔
+        const IMAGE_LIST = [
+            // 在这里粘贴您的图片链接，例如：
+            // 'https://i.ibb.co/xxxxx/photo1.jpg',
+            // 'https://i.ibb.co/xxxxx/photo2.jpg',
+        ];
+        // ===========================================
 
         // ---------- 渲染主页小相册（2x2，显示前4张） ----------
         function renderMiniMemes() {
-            let images = getStoredImages();
-            if (!images || images.length === 0) {
-                images = getDefaultImages();
-                saveStoredImages(images);
-            }
-
             memesGrid.innerHTML = '';
-            const displayImages = images.slice(0, 4);
 
-            if (displayImages.length === 0) {
+            if (IMAGE_LIST.length === 0) {
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'memes-empty';
-                emptyDiv.innerHTML = '<i class="fas fa-image"></i> 暂无';
+                emptyDiv.innerHTML = '<i class="fas fa-image"></i> 暂无图片<br><span style="font-size:0.6rem;">在代码中 IMAGE_LIST 添加链接</span>';
                 memesGrid.appendChild(emptyDiv);
                 return;
             }
+
+            const displayImages = IMAGE_LIST.slice(0, 4);
 
             displayImages.forEach((url) => {
                 const item = document.createElement('div');
@@ -1200,30 +1137,28 @@
                 memesGrid.appendChild(item);
             });
 
-            // 如果超过4张，显示"+"提示
-            if (images.length > 4) {
+            if (IMAGE_LIST.length > 4) {
                 const moreBtn = document.createElement('div');
                 moreBtn.className = 'meme-item';
                 moreBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;background:rgba(200,215,240,0.15);font-size:1.2rem;color:#7b95d0;aspect-ratio:9/16;border:2px dashed rgba(123,149,208,0.3);';
-                moreBtn.innerHTML = '+' + (images.length - 4);
+                moreBtn.innerHTML = '+' + (IMAGE_LIST.length - 4);
                 memesGrid.appendChild(moreBtn);
             }
         }
 
         // ---------- 渲染全屏相册（6列） ----------
         function renderAlbum() {
-            const images = getStoredImages();
             albumGrid.innerHTML = '';
 
-            if (images.length === 0) {
+            if (IMAGE_LIST.length === 0) {
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'album-empty';
-                emptyDiv.innerHTML = '<i class="fas fa-image"></i> 还没有图片<br>点击右上角"上传"添加';
+                emptyDiv.innerHTML = '<i class="fas fa-image"></i> 还没有图片<br>在代码中 IMAGE_LIST 添加链接';
                 albumGrid.appendChild(emptyDiv);
                 return;
             }
 
-            images.forEach((url, index) => {
+            IMAGE_LIST.forEach((url, index) => {
                 const item = document.createElement('div');
                 item.className = 'album-item';
                 const img = document.createElement('img');
@@ -1232,27 +1167,6 @@
                 img.loading = 'lazy';
                 item.appendChild(img);
 
-                // 删除按钮（需要密码）
-                const delBtn = document.createElement('button');
-                delBtn.className = 'delete-btn';
-                delBtn.innerHTML = '<i class="fas fa-times"></i>';
-                delBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const pwd = prompt('请输入管理员密码删除此图片：');
-                    if (pwd === ADMIN_PASSWORD) {
-                        const newImages = getStoredImages();
-                        newImages.splice(index, 1);
-                        saveStoredImages(newImages);
-                        renderAlbum();
-                        renderMiniMemes();
-                        alert('✅ 已删除');
-                    } else if (pwd !== null) {
-                        alert('❌ 密码错误');
-                    }
-                });
-                item.appendChild(delBtn);
-
-                // 点击图片查看大图
                 item.addEventListener('click', function() {
                     window.open(url, '_blank');
                 });
@@ -1271,87 +1185,67 @@
         function closeAlbum() {
             albumPage.classList.remove('open');
             document.body.style.overflow = '';
-            renderMiniMemes();
         }
 
         memesSection.addEventListener('click', openAlbum);
         albumCloseBtn.addEventListener('click', closeAlbum);
 
-        // ---------- 上传图片（相册页） ----------
-        albumUploadBtn.addEventListener('click', function() {
-            const pwd = prompt('请输入管理员密码以上传图片：');
-            if (pwd === ADMIN_PASSWORD) {
-                fileInput.click();
-            } else if (pwd !== null) {
-                alert('❌ 密码错误');
-            }
-        });
-
-        // ---------- 清空所有图片（相册页） ----------
-        albumClearBtn.addEventListener('click', function() {
-            const pwd = prompt('请输入管理员密码以清空所有图片：');
-            if (pwd === ADMIN_PASSWORD) {
-                if (confirm('确定要清空所有 Memes 图片吗？')) {
-                    saveStoredImages([]);
-                    renderAlbum();
-                    renderMiniMemes();
-                    alert('✅ 已清空所有图片');
-                }
-            } else if (pwd !== null) {
-                alert('❌ 密码错误');
-            }
-        });
-
-        // ---------- 文件上传处理 ----------
-        fileInput.addEventListener('change', function(e) {
-            const files = Array.from(e.target.files);
-            if (files.length === 0) return;
-
-            const images = getStoredImages();
-            let loadedCount = 0;
-
-            files.forEach(function(file) {
-                if (images.length >= MAX_IMAGES) {
-                    alert('已达到最大图片数量 (' + MAX_IMAGES + ' 张)');
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    images.push(ev.target.result);
-                    loadedCount++;
-                    if (loadedCount === files.length) {
-                        saveStoredImages(images);
-                        renderAlbum();
-                        renderMiniMemes();
-                        alert('✅ 成功上传 ' + loadedCount + ' 张图片！');
-                    }
-                };
-                reader.onerror = function() {
-                    loadedCount++;
-                    if (loadedCount === files.length) {
-                        saveStoredImages(images);
-                        renderAlbum();
-                        renderMiniMemes();
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-
-            fileInput.value = '';
-        });
-
-        // ---------- ESC 关闭相册 ----------
+        // ESC 关闭相册
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && albumPage.classList.contains('open')) {
                 closeAlbum();
             }
         });
 
-        // ---------- 点击遮罩关闭相册 ----------
-        // 相册页面本身点击空白区域关闭（点击内容区域不关闭）
+        // 点击遮罩关闭
         albumPage.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeAlbum();
+            }
+        });
+
+        // ============================================================
+        // ========== 7. 音乐播放器 ==========
+        // ============================================================
+        const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+        let audio = null;
+
+        // ⚠️ 替换成您的音乐链接（上传到 catbox.moe 或其他图床）
+        const MUSIC_URL = 'https://raw.githubusercontent.com/jijie/jijie.github.io/main/study-%E5%BD%95%E5%88%B6bgm.mp3';
+
+        function initAudio() {
+            if (!audio) {
+                audio = new Audio(MUSIC_URL);
+                audio.loop = true;
+                audio.addEventListener('ended', function() {
+                    isPlaying = false;
+                    musicIcon.className = 'fas fa-play';
+                    musicBtn.style.animation = 'none';
+                    musicBtn.classList.remove('playing');
+                });
+            }
+        }
+
+        musicBtn.addEventListener('click', function() {
+            initAudio();
+            
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                musicIcon.className = 'fas fa-play';
+                musicBtn.style.animation = 'none';
+                musicBtn.classList.remove('playing');
+            } else {
+                audio.play().catch(function(err) {
+                    console.log('播放失败:', err);
+                    alert('⚠️ 音乐加载失败，请检查链接是否有效');
+                });
+                isPlaying = true;
+                musicIcon.className = 'fas fa-music';
+                musicBtn.style.animation = 'spin 2s linear infinite';
+                musicBtn.classList.add('playing');
             }
         });
 
@@ -1359,8 +1253,10 @@
         renderMiniMemes();
 
         console.log('✨ 捷捷捷捷的个人网站已启动');
-        console.log('📸 Memes相册已加载，管理员密码: 840526');
+        console.log('📸 Memes相册已加载，图片数量:', IMAGE_LIST.length);
+        console.log('🎵 音乐播放器已加载，音乐链接:', MUSIC_URL);
         console.log('💡 点击相册区域进入全屏查看');
+        console.log('📝 添加图片：在 IMAGE_LIST 数组中粘贴链接');
     })();
 </script>
 </body>
