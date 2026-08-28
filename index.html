@@ -118,17 +118,29 @@
             flex-wrap: wrap;
         }
 
-        /* 左侧个人简介卡片 */
+        /* ===== 左侧列 ===== */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            width: 280px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
         .profile-card {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 24px 28px;
+            border-radius: 24px 24px 0 0;
+            padding: 24px 28px 20px;
             border: 1px solid rgba(255, 255, 255, 0.5);
+            border-bottom: none;
             box-shadow: 0 8px 32px rgba(120, 140, 200, 0.12);
-            width: 280px;
-            flex-shrink: 0;
+            width: 100%;
             transition: all 0.3s;
+            z-index: 2;
+            position: relative;
         }
 
         .profile-card:hover {
@@ -170,7 +182,277 @@
             line-height: 1.6;
         }
 
-        /* 右侧区域 */
+        /* ===== 抽屉容器 ===== */
+        .drawer-container {
+            position: relative;
+            width: 100%;
+            z-index: 3;
+            margin-top: -2px;
+            overflow: hidden;
+            border-radius: 0 0 24px 24px;
+            max-height: 48px;
+            transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.6s ease;
+            box-shadow: 0 4px 16px rgba(120, 140, 200, 0.08);
+        }
+
+        .drawer-container.open {
+            max-height: 520px;
+            box-shadow: 0 12px 48px rgba(10, 10, 40, 0.3);
+        }
+
+        .drawer-inner {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-top: none;
+            border-radius: 0 0 24px 24px;
+            transform: translateY(0);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .team-tab {
+            text-align: center;
+            padding: 6px 18px 12px;
+            font-size: 0.65rem;
+            color: #5a6f96;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s;
+            transform: scaleY(-1);
+            clip-path: polygon(6% 0%, 94% 0%, 100% 100%, 0% 100%);
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 auto;
+            width: 200px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .team-tab .tab-text {
+            transform: scaleY(-1);
+            display: block;
+            padding-top: 4px;
+        }
+
+        .team-tab:hover {
+            color: #1e2b4a;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .team-tab i {
+            margin-right: 4px;
+            font-size: 0.6rem;
+        }
+
+        .team-drawer {
+            width: 100%;
+            padding: 0 4px 4px;
+            background: linear-gradient(145deg, #0b0e2a, #1a1a4e, #2a1a5e);
+            border-radius: 0 0 16px 16px;
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.4s ease,
+                        padding 0.4s ease;
+            padding: 0 12px;
+            border: 1px solid rgba(150, 130, 255, 0.12);
+            border-top: none;
+        }
+
+        .drawer-container.open .team-drawer {
+            max-height: 400px;
+            opacity: 1;
+            padding: 16px 12px 18px;
+        }
+
+        .team-drawer .flow-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .team-drawer .flow-bg .flow-layer {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.35;
+            animation: flowDrift 10s ease-in-out infinite alternate;
+        }
+
+        .team-drawer .flow-bg .flow-layer:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            background: rgba(80, 60, 255, 0.4);
+            top: -20px;
+            left: -10px;
+            animation-duration: 8s;
+        }
+
+        .team-drawer .flow-bg .flow-layer:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            background: rgba(180, 80, 255, 0.3);
+            bottom: -10px;
+            right: -5px;
+            animation-duration: 10s;
+            animation-delay: 1s;
+        }
+
+        .team-drawer .flow-bg .flow-layer:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            background: rgba(60, 120, 255, 0.25);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 12s;
+            animation-delay: 0.5s;
+        }
+
+        .team-drawer .flow-bg .flow-layer:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            background: rgba(200, 100, 255, 0.2);
+            top: 30%;
+            right: -10px;
+            animation-duration: 7s;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes flowDrift {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(15px, -10px) scale(1.15); }
+            100% { transform: translate(-8px, 15px) scale(0.9); }
+        }
+
+        .team-drawer .flow-bg .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: particleFloat 4s ease-in-out infinite;
+        }
+
+        .team-drawer .flow-bg .particle:nth-child(5) {
+            width: 6px;
+            height: 6px;
+            background: rgba(150, 100, 255, 0.5);
+            top: -8px;
+            left: 25%;
+            animation-delay: 0s;
+            animation-duration: 3.5s;
+        }
+
+        .team-drawer .flow-bg .particle:nth-child(6) {
+            width: 5px;
+            height: 5px;
+            background: rgba(100, 200, 255, 0.4);
+            top: -6px;
+            right: 35%;
+            animation-delay: 1.2s;
+            animation-duration: 4s;
+        }
+
+        .team-drawer .flow-bg .particle:nth-child(7) {
+            width: 7px;
+            height: 7px;
+            background: rgba(200, 80, 255, 0.4);
+            top: -9px;
+            left: 65%;
+            animation-delay: 2s;
+            animation-duration: 3.8s;
+        }
+
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            20% { opacity: 0.7; transform: translateY(-15px) scale(1.1); }
+            60% { opacity: 0.3; transform: translateY(-35px) scale(0.8); }
+            100% { opacity: 0; transform: translateY(-60px) scale(0.4); }
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 10px;
+        }
+
+        .team-member:last-child {
+            margin-bottom: 0;
+        }
+
+        .team-member:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(4px);
+        }
+
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a7fc0, #8a6fc0);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 16px rgba(100, 80, 200, 0.3);
+            overflow: hidden;
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .member-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e8e4ff;
+            letter-spacing: 0.3px;
+        }
+
+        .member-role {
+            font-size: 0.75rem;
+            color: rgba(180, 170, 255, 0.7);
+            margin-top: 1px;
+        }
+
+        .member-sig {
+            font-size: 0.7rem;
+            color: rgba(200, 190, 255, 0.5);
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        /* ===== 右侧区域 ===== */
         .right-side {
             display: flex;
             flex-direction: column;
@@ -180,16 +462,15 @@
             min-width: 0;
         }
 
-        /* 音乐 + 时间 行 */
         .music-time-row {
             display: flex;
             align-items: center;
             gap: 12px;
             width: 100%;
             justify-content: flex-end;
+            position: relative;
         }
 
-        /* 音乐按钮 */
         #musicBtn {
             width: 48px;
             height: 48px;
@@ -206,6 +487,8 @@
             font-size: 1.2rem;
             color: #1e2b4a;
             flex-shrink: 0;
+            position: relative;
+            z-index: 5;
         }
 
         #musicBtn:hover {
@@ -223,7 +506,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* 实时时间 */
         .time-box {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
@@ -245,7 +527,6 @@
             margin-top: 2px;
         }
 
-        /* 小方块容器 */
         .mini-blocks {
             display: flex;
             gap: 10px;
@@ -268,7 +549,6 @@
             color: #1e2b4a;
             min-width: 70px;
             text-align: center;
-            position: relative;
         }
 
         .mini-block:hover {
@@ -277,7 +557,7 @@
             background: rgba(255, 255, 255, 0.8);
         }
 
-        /* ===== Memes 相册模块 - 竖长方形 ===== */
+        /* ===== Memes 相册 ===== */
         .memes-section {
             width: 100%;
             max-width: 200px;
@@ -515,7 +795,6 @@
             opacity: 0.3;
         }
 
-        /* 中间弹性空白区域 */
         .middle-spacer {
             flex: 1 0 auto;
             min-height: 40px;
@@ -691,6 +970,10 @@
                 align-items: stretch;
             }
 
+            .left-column {
+                width: 100%;
+            }
+
             .profile-card {
                 width: 100%;
             }
@@ -732,6 +1015,13 @@
             .album-page {
                 padding: 20px;
             }
+
+            /* 迷你播放器响应式 */
+            .mini-player {
+                width: 260px !important;
+                right: 10px !important;
+                top: 75px !important;
+            }
         }
 
         @media (max-width: 600px) {
@@ -740,7 +1030,7 @@
             }
 
             .profile-card {
-                padding: 18px 16px;
+                padding: 18px 16px 16px;
             }
 
             .mini-block {
@@ -802,6 +1092,315 @@
                 padding: 6px 14px;
                 font-size: 0.75rem;
             }
+
+            .team-tab {
+                width: 160px;
+                font-size: 0.55rem;
+                padding: 4px 14px 10px;
+            }
+
+            .team-member {
+                padding: 10px 12px;
+                gap: 10px;
+            }
+
+            .member-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .member-name {
+                font-size: 0.95rem;
+            }
+
+            .member-role {
+                font-size: 0.65rem;
+            }
+
+            .member-sig {
+                font-size: 0.6rem;
+            }
+
+            .drawer-container {
+                max-height: 40px;
+            }
+
+            .drawer-container.open {
+                max-height: 460px;
+            }
+
+            .mini-player {
+                width: 220px !important;
+                right: 8px !important;
+                top: 68px !important;
+                padding: 12px 14px 10px !important;
+            }
+
+            .mini-player .mp-song-title {
+                font-size: 0.8rem !important;
+            }
+
+            .mini-player .mp-controls button {
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 0.7rem !important;
+            }
+
+            .mini-player .mp-controls .mp-btn-play {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 0.85rem !important;
+            }
+        }
+
+        /* ============================================================
+        ===== 迷你播放器 =====
+        ============================================================ */
+        .mini-player {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: 280px;
+            background: rgba(15, 12, 45, 0.92);
+            backdrop-filter: blur(24px);
+            border-radius: 20px;
+            padding: 16px 20px 14px;
+            box-shadow: 0 16px 56px rgba(10, 10, 40, 0.55), inset 0 0 40px rgba(80, 60, 180, 0.06);
+            border: 1px solid rgba(150, 130, 255, 0.1);
+            z-index: 500;
+            transform: translateY(-12px) scale(0.92);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transform-origin: top right;
+        }
+
+        .mini-player.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 迷你播放器流动背景 */
+        .mini-player .mp-flow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .mini-player .mp-flow .mp-layer {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(45px);
+            opacity: 0.2;
+            animation: mpFlowDrift 10s ease-in-out infinite alternate;
+        }
+
+        .mini-player .mp-flow .mp-layer:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            background: rgba(80, 60, 255, 0.3);
+            top: -30px;
+            right: -20px;
+            animation-duration: 8s;
+        }
+
+        .mini-player .mp-flow .mp-layer:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            background: rgba(180, 80, 255, 0.2);
+            bottom: -10px;
+            left: -10px;
+            animation-duration: 12s;
+            animation-delay: 1s;
+        }
+
+        .mini-player .mp-flow .mp-layer:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            background: rgba(60, 120, 255, 0.2);
+            top: 40%;
+            left: 30%;
+            animation-duration: 10s;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes mpFlowDrift {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10px, -8px) scale(1.1); }
+            100% { transform: translate(-6px, 10px) scale(0.9); }
+        }
+
+        .mini-player .mp-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 关闭按钮 */
+        .mini-player .mp-close {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            font-size: 0.65rem;
+            z-index: 2;
+            transition: color 0.3s;
+            padding: 4px;
+        }
+
+        .mini-player .mp-close:hover {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 歌曲信息 */
+        .mini-player .mp-song-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-right: 20px;
+        }
+
+        .mini-player .mp-song-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #f0ecff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .mini-player .mp-song-artist {
+            font-size: 0.7rem;
+            color: rgba(180, 170, 255, 0.45);
+            margin-top: 1px;
+        }
+
+        /* 进度条 */
+        .mini-player .mp-progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 2px;
+        }
+
+        .mini-player .mp-progress-wrap .mp-time {
+            font-size: 0.6rem;
+            color: rgba(180, 170, 255, 0.35);
+            min-width: 28px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .mini-player .mp-progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: height 0.2s;
+        }
+
+        .mini-player .mp-progress-bar:hover {
+            height: 5px;
+        }
+
+        .mini-player .mp-progress-bar .mp-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #6a7fc0, #b8a0ff);
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+
+        .mini-player .mp-progress-bar .mp-progress-dot {
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: #b8a0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 16px rgba(150, 130, 255, 0.25);
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .mini-player .mp-progress-bar:hover .mp-progress-dot {
+            opacity: 1;
+        }
+
+        /* 控制按钮 */
+        .mini-player .mp-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding-top: 2px;
+        }
+
+        .mini-player .mp-controls button {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .mini-player .mp-controls button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .mini-player .mp-controls button:active {
+            transform: scale(0.95);
+        }
+
+        .mini-player .mp-controls .mp-btn-play {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #6a7fc0, #8a6fc0);
+            color: white;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(100, 80, 200, 0.2);
+            border: none;
+        }
+
+        .mini-player .mp-controls .mp-btn-play:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 28px rgba(100, 80, 200, 0.3);
+        }
+
+        .mini-player .mp-controls .mp-btn-play:active {
+            transform: scale(0.95);
         }
 
         /* 滚动条美化 */
@@ -862,6 +1461,41 @@
         </div>
     </div>
 
+    <!-- ===== 迷你播放器 ===== -->
+    <div id="miniPlayer" class="mini-player">
+        <!-- 流动背景 -->
+        <div class="mp-flow">
+            <div class="mp-layer"></div>
+            <div class="mp-layer"></div>
+            <div class="mp-layer"></div>
+        </div>
+
+        <!-- 内容 -->
+        <div class="mp-content">
+            <button class="mp-close" id="mpClose"><i class="fas fa-times"></i></button>
+
+            <div class="mp-song-info">
+                <div class="mp-song-title" id="mpSongTitle">选择一首歌</div>
+                <div class="mp-song-artist" id="mpSongArtist">点击播放</div>
+            </div>
+
+            <div class="mp-progress-wrap">
+                <span class="mp-time" id="mpTimeCurrent">0:00</span>
+                <div class="mp-progress-bar" id="mpProgressBar">
+                    <div class="mp-progress-fill" id="mpProgressFill"></div>
+                    <div class="mp-progress-dot" id="mpProgressDot"></div>
+                </div>
+                <span class="mp-time" id="mpTimeTotal">0:00</span>
+            </div>
+
+            <div class="mp-controls">
+                <button id="mpPrevBtn" title="上一首"><i class="fas fa-backward"></i></button>
+                <button class="mp-btn-play" id="mpPlayBtn"><i class="fas fa-play" id="mpPlayIcon"></i></button>
+                <button id="mpNextBtn" title="下一首"><i class="fas fa-forward"></i></button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== 相册全屏页面 ===== -->
     <div id="albumPage" class="album-page">
         <div class="album-header">
@@ -879,38 +1513,84 @@
     <div id="mainContent" class="main-content">
         <!-- 顶部区域 -->
         <div class="top-section">
-            <!-- 左侧：个人简介卡片 -->
-            <div class="profile-card">
-                <div class="profile-avatar">
-                    <img 
-                        src="https://i.imgs.ovh/2026/08/27/39491e380b4a522006f840705c8117b3.jpg" 
-                        alt="头像" 
-                        id="avatarImg"
-                        onerror="this.onerror=null; this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=jiejie';"
-                        style="width:100%; height:100%; object-fit:cover;"
-                    >
+            <!-- ===== 左侧列 ===== -->
+            <div class="left-column">
+                <!-- 个人简介卡片 -->
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <img 
+                            src="https://i.imgs.ovh/2026/08/27/39491e380b4a522006f840705c8117b3.jpg" 
+                            alt="头像" 
+                            id="avatarImg"
+                            onerror="this.onerror=null; this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=jiejie';"
+                            style="width:100%; height:100%; object-fit:cover;"
+                        >
+                    </div>
+                    <h2>捷捷捷捷</h2>
+                    <p class="subtitle">欢迎你来到我的个人网站。<br>我是 <strong>捷捷捷捷</strong></p>
                 </div>
-                <h2>捷捷捷捷</h2>
-                <p class="subtitle">欢迎你来到我的个人网站。<br>我是 <strong>捷捷捷捷</strong></p>
+
+                <!-- ===== 抽屉容器 - 整体滑动 ===== -->
+                <div class="drawer-container" id="drawerContainer">
+                    <div class="drawer-inner">
+                        <!-- 梯形标签（把手） -->
+                        <div class="team-tab" id="teamTab">
+                            <span class="tab-text"><i class="fas fa-users"></i> 查看网站制作人员</span>
+                        </div>
+
+                        <!-- 下拉面板（内容） -->
+                        <div class="team-drawer" id="teamDrawer">
+                            <!-- 流动背景 -->
+                            <div class="flow-bg">
+                                <div class="flow-layer"></div>
+                                <div class="flow-layer"></div>
+                                <div class="flow-layer"></div>
+                                <div class="flow-layer"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                            </div>
+
+                            <!-- 人员1 -->
+                            <div class="team-member">
+                                <div class="member-avatar" id="avatar1">
+                                    <img src="https://i.imgs.ovh/2026/08/28/8d78facb85672059d0fe617d151bd7a0.jpg">
+                                </div>
+                                <div class="member-info">
+                                    <div class="member-name">捷捷捷捷</div>
+                                    <div class="member-role">网站开发者</div>
+                                    <div class="member-sig">"写代码久了真的会秃顶么..."</div>
+                                </div>
+                            </div>
+
+                            <!-- 人员2 -->
+                            <div class="team-member">
+                                <div class="member-avatar" id="avatar2">
+                                    <img src="https://i.imgs.ovh/2026/08/28/6ebebf5cc456d8eb43c1459529ea964c.jpg">
+                                </div>
+                                <div class="member-info">
+                                    <div class="member-name">Lee</div>
+                                    <div class="member-role">测试人员</div>
+                                    <div class="member-sig">"个性签名"</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- 右侧 -->
+            <!-- ===== 右侧区域 ===== -->
             <div class="right-side">
-                <!-- 音乐 + 时间 行 -->
                 <div class="music-time-row">
-                    <!-- 音乐播放按钮 -->
                     <div id="musicBtn">
                         <i class="fas fa-play" id="musicIcon"></i>
                     </div>
-
-                    <!-- 实时时间 -->
                     <div class="time-box" id="timeBox">
                         <span id="timeDisplay">00:00:00</span>
                         <div class="date-text" id="dateDisplay">----年--月--日</div>
                     </div>
                 </div>
 
-                <!-- 小方块们 -->
                 <div class="mini-blocks">
                     <div class="mini-block" id="announcementBtn">
                         <i class="fas fa-bullhorn"></i> 公告
@@ -923,7 +1603,6 @@
                     </div>
                 </div>
 
-                <!-- ===== Memes 相册模块 ===== -->
                 <div class="memes-section" id="memesSection">
                     <div class="memes-header">
                         <h3><i class="fas fa-image"></i> Memes</h3>
@@ -937,10 +1616,8 @@
             </div>
         </div>
 
-        <!-- 中间弹性空白区域 -->
         <div class="middle-spacer"></div>
 
-        <!-- 底部区域 -->
         <div class="footer-section">
             <div class="footer-links">
                 <div class="footer-link-group">
@@ -1075,7 +1752,24 @@
         });
 
         // ============================================================
-        // ========== 6. Memes 相册（纯展示） ==========
+        // ========== 6. 抽屉效果 - 整体滑出 ==========
+        // ============================================================
+        const drawerContainer = document.getElementById('drawerContainer');
+        let drawerTimer = null;
+
+        drawerContainer.addEventListener('mouseenter', function() {
+            clearTimeout(drawerTimer);
+            this.classList.add('open');
+        });
+
+        drawerContainer.addEventListener('mouseleave', function() {
+            drawerTimer = setTimeout(() => {
+                this.classList.remove('open');
+            }, 400);
+        });
+
+        // ============================================================
+        // ========== 7. Memes 相册 ==========
         // ============================================================
         const memesGrid = document.getElementById('memesGrid');
         const albumGrid = document.getElementById('albumGrid');
@@ -1083,20 +1777,30 @@
         const albumPage = document.getElementById('albumPage');
         const albumCloseBtn = document.getElementById('albumCloseBtn');
 
-        // ═══════════════════════════════════════════════════
-        // 📸 在这里添加您的图片链接（一行一个，用逗号分隔）
-        // ═══════════════════════════════════════════════════
         const IMAGE_LIST = [
-            // 示例：'https://i.ibb.co/xxxxx/photo1.jpg',
-            // 示例：'https://i.ibb.co/xxxxx/photo2.jpg',
-            // 把您的图片链接粘贴在这里
+            'https://i.imgs.ovh/2026/08/28/aecc1f0f56213f047e39a38d6266100c.jpg',
+            'https://i.imgs.ovh/2026/08/28/7ac05475a6ea6debc0d9b05be2a29dce.jpg',
+            'https://i.imgs.ovh/2026/08/28/8edff2e4f5ed19d91391b6e5e1b7dbee.jpg',
+            'https://i.imgs.ovh/2026/08/28/98dfa19e37ce1de8122f8903dd4a4427.jpg',
+            'https://i.imgs.ovh/2026/08/28/1539bc2d74329e973ec9b0de99ad4e7b.jpg',
+            'https://i.imgs.ovh/2026/08/28/6041286450dcb476dc55e85e9cb039e1.jpg',
+            'https://i.imgs.ovh/2026/08/27/b32fa72cf0ad0d2676822713e8006d19.jpg',
+            'https://i.imgs.ovh/2026/08/28/bfd48100571a1853a3bb14613ad050f1.jpg',
+            'https://i.imgs.ovh/2026/08/28/9a81af26082afae483f4f5353874a4f8.jpg',
+            'https://i.imgs.ovh/2026/08/28/de6ddf1b3b1aac781b3780e8bd537291.jpg',
+            'https://i.imgs.ovh/2026/08/28/2baae02d10c1682955743b7809f61836.jpg',
+            'https://i.imgs.ovh/2026/08/28/384096457e63f853abbcbc62861b77e1.jpg',
+            'https://i.imgs.ovh/2026/08/28/16220acd55af815243912607cd931c3d.jpg',
+            'https://i.imgs.ovh/2026/08/28/669d359dbfac4827b848563fdaa71935.jpg',
+            'https://i.imgs.ovh/2026/08/28/b428b41aaa2767dbff7682edb231a373.jpg',
+            'https://i.imgs.ovh/2026/08/28/3e14ba66838b9713b66687f8a18240bc.jpg',
+            'https://i.imgs.ovh/2026/08/28/db1bd177ca1c37cdf3222559cee85a91.jpg',
+            'https://i.imgs.ovh/2026/08/28/fd83e2dfa1f53accc8776bd100c493ee.jpg',
+            'https://i.imgs.ovh/2026/08/28/8d96ff953da56d5438d8b0f842c8d251.jpg',
         ];
-        // ═══════════════════════════════════════════════════
 
-        // ---------- 渲染主页小相册（2x2，显示前4张） ----------
         function renderMiniMemes() {
             memesGrid.innerHTML = '';
-
             if (IMAGE_LIST.length === 0) {
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'memes-empty';
@@ -1104,9 +1808,7 @@
                 memesGrid.appendChild(emptyDiv);
                 return;
             }
-
             const displayImages = IMAGE_LIST.slice(0, 4);
-
             displayImages.forEach((url) => {
                 const item = document.createElement('div');
                 item.className = 'meme-item';
@@ -1117,7 +1819,6 @@
                 item.appendChild(img);
                 memesGrid.appendChild(item);
             });
-
             if (IMAGE_LIST.length > 4) {
                 const moreBtn = document.createElement('div');
                 moreBtn.className = 'meme-item';
@@ -1127,10 +1828,8 @@
             }
         }
 
-        // ---------- 渲染全屏相册（6列） ----------
         function renderAlbum() {
             albumGrid.innerHTML = '';
-
             if (IMAGE_LIST.length === 0) {
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'album-empty';
@@ -1138,7 +1837,6 @@
                 albumGrid.appendChild(emptyDiv);
                 return;
             }
-
             IMAGE_LIST.forEach((url, index) => {
                 const item = document.createElement('div');
                 item.className = 'album-item';
@@ -1147,16 +1845,13 @@
                 img.alt = 'Meme ' + (index + 1);
                 img.loading = 'lazy';
                 item.appendChild(img);
-
                 item.addEventListener('click', function() {
                     window.open(url, '_blank');
                 });
-
                 albumGrid.appendChild(item);
             });
         }
 
-        // ---------- 打开/关闭相册 ----------
         function openAlbum() {
             renderAlbum();
             albumPage.classList.add('open');
@@ -1171,14 +1866,12 @@
         memesSection.addEventListener('click', openAlbum);
         albumCloseBtn.addEventListener('click', closeAlbum);
 
-        // ESC 关闭相册
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && albumPage.classList.contains('open')) {
                 closeAlbum();
             }
         });
 
-        // 点击遮罩关闭
         albumPage.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeAlbum();
@@ -1186,51 +1879,246 @@
         });
 
         // ============================================================
-        // ========== 7. 音乐播放器（直接引用同目录 MP3） ==========
+        // ========== 8. 迷你播放器 ==========
         // ============================================================
+        // ----- 歌曲列表（所有歌曲共享同一个 MP3） -----
+        const songs = [
+            { title: 'study #240726', artist: 'Study Group', url: 'study-录制bgm.mp3' },
+            { title: 'いい日だったね(这是一个美好的日子)', artist: 'Depapepe (デパペペ)', url: '这是一个美好的日子.mp3' },
+        ];
+
+        // ----- DOM 元素 -----
         const musicBtn = document.getElementById('musicBtn');
         const musicIcon = document.getElementById('musicIcon');
+
+        const miniPlayer = document.getElementById('miniPlayer');
+        const mpClose = document.getElementById('mpClose');
+        const mpPlayBtn = document.getElementById('mpPlayBtn');
+        const mpPlayIcon = document.getElementById('mpPlayIcon');
+        const mpPrevBtn = document.getElementById('mpPrevBtn');
+        const mpNextBtn = document.getElementById('mpNextBtn');
+        const mpProgressBar = document.getElementById('mpProgressBar');
+        const mpProgressFill = document.getElementById('mpProgressFill');
+        const mpProgressDot = document.getElementById('mpProgressDot');
+        const mpTimeCurrent = document.getElementById('mpTimeCurrent');
+        const mpTimeTotal = document.getElementById('mpTimeTotal');
+        const mpSongTitle = document.getElementById('mpSongTitle');
+        const mpSongArtist = document.getElementById('mpSongArtist');
+
+        let currentSongIndex = 0;
         let isPlaying = false;
         let audio = null;
+        let isDragging = false;
+        let isPlayerOpen = false;
 
-        // ═══════════════════════════════════════════════════
-        // 🎵 直接引用 GitHub 仓库中的 MP3 文件
-        // 确保 MP3 文件和 index.html 在同一目录下
-        // ═══════════════════════════════════════════════════
-        const MUSIC_URL = 'study-录制bgm.mp3';
-        // ═══════════════════════════════════════════════════
-
+        // ----- 初始化音频 -----
         function initAudio() {
             if (!audio) {
-                audio = new Audio(MUSIC_URL);
-                audio.loop = true;
+                audio = new Audio(songs[currentSongIndex].url);
+                audio.addEventListener('timeupdate', updateProgress);
+                audio.addEventListener('loadedmetadata', function() {
+                    mpTimeTotal.textContent = formatTime(audio.duration);
+                });
                 audio.addEventListener('ended', function() {
-                    isPlaying = false;
-                    musicIcon.className = 'fas fa-play';
-                    musicBtn.style.animation = 'none';
-                    musicBtn.classList.remove('playing');
+                    playNext();
                 });
             }
         }
 
-        musicBtn.addEventListener('click', function() {
+        // ----- 播放指定歌曲 -----
+        function playSong(index) {
+            if (index < 0 || index >= songs.length) return;
+            currentSongIndex = index;
+            const song = songs[currentSongIndex];
+            
+            initAudio();
+            audio.src = song.url;
+            audio.load();
+            audio.play().catch(function(err) {
+                console.log('播放失败:', err);
+            });
+            
+            isPlaying = true;
+            mpSongTitle.textContent = song.title;
+            mpSongArtist.textContent = song.artist;
+            mpPlayIcon.className = 'fas fa-pause';
+            musicIcon.className = 'fas fa-music';
+            musicBtn.style.animation = 'spin 2s linear infinite';
+            musicBtn.classList.add('playing');
+            updateProgress();
+        }
+
+        // ----- 播放/暂停切换 -----
+        function togglePlay() {
             initAudio();
             
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
+                mpPlayIcon.className = 'fas fa-play';
                 musicIcon.className = 'fas fa-play';
                 musicBtn.style.animation = 'none';
                 musicBtn.classList.remove('playing');
             } else {
+                if (!audio.src || audio.src === '') {
+                    const song = songs[currentSongIndex];
+                    audio.src = song.url;
+                    mpSongTitle.textContent = song.title;
+                    mpSongArtist.textContent = song.artist;
+                }
                 audio.play().catch(function(err) {
                     console.log('播放失败:', err);
-                    alert('⚠️ 音乐加载失败，请检查 MP3 文件是否在仓库中');
                 });
                 isPlaying = true;
+                mpPlayIcon.className = 'fas fa-pause';
                 musicIcon.className = 'fas fa-music';
                 musicBtn.style.animation = 'spin 2s linear infinite';
                 musicBtn.classList.add('playing');
+            }
+        }
+
+        // ----- 上一首/下一首 -----
+        function playPrev() {
+            const newIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            playSong(newIndex);
+        }
+
+        function playNext() {
+            const newIndex = (currentSongIndex + 1) % songs.length;
+            playSong(newIndex);
+        }
+
+        // ----- 进度条 -----
+        function updateProgress() {
+            if (!audio || isDragging) return;
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                mpProgressFill.style.width = percent + '%';
+                mpProgressDot.style.left = percent + '%';
+                mpTimeCurrent.textContent = formatTime(audio.currentTime);
+            }
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return min + ':' + String(sec).padStart(2, '0');
+        }
+
+        // ----- 进度条拖拽 -----
+        mpProgressBar.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            updateProgressFromEvent(e);
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                updateProgressFromEvent(e);
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isDragging && audio) {
+                const percent = parseFloat(mpProgressFill.style.width) / 100;
+                audio.currentTime = percent * audio.duration;
+                isDragging = false;
+            }
+        });
+
+        function updateProgressFromEvent(e) {
+            const rect = mpProgressBar.getBoundingClientRect();
+            const percent = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+            mpProgressFill.style.width = (percent * 100) + '%';
+            mpProgressDot.style.left = (percent * 100) + '%';
+            if (audio && audio.duration) {
+                mpTimeCurrent.textContent = formatTime(percent * audio.duration);
+            }
+        }
+
+        // ----- 打开/关闭迷你播放器 -----
+        function openMiniPlayer() {
+            isPlayerOpen = true;
+            miniPlayer.classList.add('open');
+            // 如果还没有歌曲信息，显示第一首
+            if (!mpSongTitle.textContent || mpSongTitle.textContent === '选择一首歌') {
+                const song = songs[currentSongIndex];
+                mpSongTitle.textContent = song.title;
+                mpSongArtist.textContent = song.artist;
+                initAudio();
+                if (audio && audio.duration) {
+                    mpTimeTotal.textContent = formatTime(audio.duration);
+                }
+            }
+        }
+
+        function closeMiniPlayer() {
+            isPlayerOpen = false;
+            miniPlayer.classList.remove('open');
+        }
+
+        // 点击外部关闭
+        document.addEventListener('click', function(e) {
+            if (isPlayerOpen && 
+                !miniPlayer.contains(e.target) && 
+                e.target !== musicBtn && 
+                !musicBtn.contains(e.target)) {
+                closeMiniPlayer();
+            }
+        });
+
+        // ----- 事件绑定 -----
+        musicBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (isPlayerOpen) {
+                closeMiniPlayer();
+            } else {
+                openMiniPlayer();
+            }
+        });
+
+        mpClose.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeMiniPlayer();
+        });
+
+        mpPlayBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            togglePlay();
+        });
+
+        mpPrevBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            playPrev();
+        });
+
+        mpNextBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            playNext();
+        });
+
+        // 阻止播放器内部点击冒泡
+        miniPlayer.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // ----- 键盘快捷键（仅在播放器打开时） -----
+        document.addEventListener('keydown', function(e) {
+            if (!isPlayerOpen) return;
+            if (e.key === 'Escape') {
+                closeMiniPlayer();
+            }
+            if (e.key === ' ' || e.key === 'Space') {
+                e.preventDefault();
+                togglePlay();
+            }
+            if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                playNext();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                playPrev();
             }
         });
 
@@ -1239,9 +2127,9 @@
 
         console.log('✨ 捷捷捷捷的个人网站已启动');
         console.log('📸 Memes相册已加载，图片数量:', IMAGE_LIST.length);
-        console.log('🎵 音乐播放器已加载，音乐文件:', MUSIC_URL);
-        console.log('💡 点击相册区域进入全屏查看');
-        console.log('📝 添加图片：在 IMAGE_LIST 数组中粘贴链接');
+        console.log('🎵 迷你播放器已加载，歌曲数量:', songs.length);
+        console.log('💡 点击圆形音乐按钮打开播放器');
+        console.log('🎹 快捷键: 空格=播放/暂停, ←=上一首, →=下一首, ESC=关闭');
     })();
 </script>
 </body>
