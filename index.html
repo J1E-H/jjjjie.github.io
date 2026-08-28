@@ -467,25 +467,6 @@
             background: rgba(200, 215, 240, 0.5);
         }
 
-        .album-page .album-header .btn-upload-album {
-            background: #6f8ed6;
-            color: white;
-        }
-
-        .album-page .album-header .btn-upload-album:hover {
-            background: #5a77b8;
-            transform: scale(1.02);
-        }
-
-        .album-page .album-header .btn-clear-album {
-            background: #e74c6f;
-            color: white;
-        }
-
-        .album-page .album-header .btn-clear-album:hover {
-            background: #c0392b;
-        }
-
         .album-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -1094,7 +1075,7 @@
         });
 
         // ============================================================
-        // ========== 6. Memes 相册（纯展示，无默认图片） ==========
+        // ========== 6. Memes 相册（纯展示） ==========
         // ============================================================
         const memesGrid = document.getElementById('memesGrid');
         const albumGrid = document.getElementById('albumGrid');
@@ -1102,15 +1083,15 @@
         const albumPage = document.getElementById('albumPage');
         const albumCloseBtn = document.getElementById('albumCloseBtn');
 
-        // ---------- 您在这里添加图片链接 ----------
-        // 格式：'https://xxxxx.jpg',
-        // 想加多少加多少，一行一个，用逗号分隔
+        // ═══════════════════════════════════════════════════
+        // 📸 在这里添加您的图片链接（一行一个，用逗号分隔）
+        // ═══════════════════════════════════════════════════
         const IMAGE_LIST = [
-            // 在这里粘贴您的图片链接，例如：
-            // 'https://i.ibb.co/xxxxx/photo1.jpg',
-            // 'https://i.ibb.co/xxxxx/photo2.jpg',
+            // 示例：'https://i.ibb.co/xxxxx/photo1.jpg',
+            // 示例：'https://i.ibb.co/xxxxx/photo2.jpg',
+            // 把您的图片链接粘贴在这里
         ];
-        // ===========================================
+        // ═══════════════════════════════════════════════════
 
         // ---------- 渲染主页小相册（2x2，显示前4张） ----------
         function renderMiniMemes() {
@@ -1205,15 +1186,19 @@
         });
 
         // ============================================================
-        // ========== 7. 音乐播放器 ==========
+        // ========== 7. 音乐播放器（直接引用同目录 MP3） ==========
         // ============================================================
         const musicBtn = document.getElementById('musicBtn');
         const musicIcon = document.getElementById('musicIcon');
         let isPlaying = false;
         let audio = null;
 
-        // ⚠️ 替换成您的音乐链接（上传到 catbox.moe 或其他图床）
-        const MUSIC_URL = 'https://raw.githubusercontent.com/jijie/jijie.github.io/main/study-%E5%BD%95%E5%88%B6bgm.mp3';
+        // ═══════════════════════════════════════════════════
+        // 🎵 直接引用 GitHub 仓库中的 MP3 文件
+        // 确保 MP3 文件和 index.html 在同一目录下
+        // ═══════════════════════════════════════════════════
+        const MUSIC_URL = 'study-录制bgm.mp3';
+        // ═══════════════════════════════════════════════════
 
         function initAudio() {
             if (!audio) {
@@ -1240,7 +1225,7 @@
             } else {
                 audio.play().catch(function(err) {
                     console.log('播放失败:', err);
-                    alert('⚠️ 音乐加载失败，请检查链接是否有效');
+                    alert('⚠️ 音乐加载失败，请检查 MP3 文件是否在仓库中');
                 });
                 isPlaying = true;
                 musicIcon.className = 'fas fa-music';
@@ -1254,7 +1239,7 @@
 
         console.log('✨ 捷捷捷捷的个人网站已启动');
         console.log('📸 Memes相册已加载，图片数量:', IMAGE_LIST.length);
-        console.log('🎵 音乐播放器已加载，音乐链接:', MUSIC_URL);
+        console.log('🎵 音乐播放器已加载，音乐文件:', MUSIC_URL);
         console.log('💡 点击相册区域进入全屏查看');
         console.log('📝 添加图片：在 IMAGE_LIST 数组中粘贴链接');
     })();
